@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget App</title>
+    
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-header">Budget App</h1>
+        <div class="row">
+    
+            <hr>
+
+            <div class="col-md-6">
+                <h2>Income</h2>  
+                <form action="budget.php" method="post">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3>Income</h3>
+                            <input class="form-control" type="text" name="income" id="income">    
+                        </div>
+                        <div class="col-md-4">
+                            <h3>Amount</h3>
+                            <input class="form-control" type="number" step="any" name="income-amount" id="income-amount">    
+                        </div>    
+                    </div>
+                    <input class="btn btn-primary" type="submit" name="submit-income" id="submit-income">
+                </form>    
+            </div>
+
+            <div class="col-md-6">
+                <h2>Expense</h2>
+                <form action="budget.php" method="post">
+                   <div class="row">
+                       <div class="col-md-8">
+                        <h3>Expense</h3>
+                        <input class="form-control" type="text" name="expense" id="expense">    
+                        </div>
+                        <div class="col-md-4">
+                            <h3>Amount</h3>
+                            <input class="form-control" type="number" step="any" name="expense-amount" id="expense-amount">    
+                        </div>    
+                    </div>
+                    <input class="btn btn-primary" type="submit" name="submit-expense" id="submit-expense">
+                </form>    
+            </div>    
+        </div>      
+    </div>      
+</body>
+</html>
+
