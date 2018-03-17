@@ -1,0 +1,20 @@
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
+#select-type {
+    border: 1px solid #28a745;
+    color: #28a745;
+    font-weight: 700;
+}
+
+#select-type:focus {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.red-focus {
+    border: 1px solid #dc3545 !important;
+    color: #dc3545 !important;
+}

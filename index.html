@@ -7,49 +7,76 @@
     
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="public/css/main.css">
 </head>
 <body>
     <div class="container">
-        <h1 class="page-header">Budget App</h1>
-        <div class="row">
-    
-            <hr>
-
-            <div class="col-md-6">
-                <h2>Income</h2>  
-                <form action="budget.php" method="post">
+        
+           <div class="col-md-12 mb-5">
+            <h1 class="page-header text-center mb-4 mt-3">Budget App</h1>
+            <div class="row">
+                <div class="col-md-12">
+                <h4 class="page-header text-center" id="monthly-budget">Budget for %month% : </h3>
+                    <div class="col-md-6 col-centered mb-5 mt-3">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-success">Total Income : </li>
+                            <li class="list-group-item list-group-item-danger">Total Expenses : </li>
+                        </ul>    
+                    </div>
+                <form action="db/insert.php" method="post">
                     <div class="row">
-                        <div class="col-md-8">
-                            <h3>Income</h3>
-                            <input class="form-control" type="text" name="income" id="income">    
+                        <div class="col-md-2">
+                            <select class="form-control" name="select-type" id="select-type">
+                                <option value="select-income">+</option>    
+                                <option value="select-expense">-</option>    
+                            </select>    
+                        </div> 
+                        <div class="col-md-4">
+                            <input class="form-control" type="text" name="description" id="description" placeholder="Add description">       
                         </div>
                         <div class="col-md-4">
-                            <h3>Amount</h3>
-                            <input class="form-control" type="number" step="any" name="income-amount" id="income-amount">    
+                            <input class="form-control" type="number" step="any" name="amount" id="amount" placeholder="Amount">   
+                        </div>
+                        <div class="col-md-2">
+                            <input style="width:100%;" class="btn btn-primary" type="submit" name="submit" id="submit" value="Add">                      
                         </div>    
                     </div>
-                    <input class="btn btn-primary" type="submit" name="submit-income" id="submit-income">
-                </form>    
+                </form> 
+                </div> 
             </div>
-
+        </div>    
+           
+    <hr>
+       
+        <div class="row mt-5">
             <div class="col-md-6">
-                <h2>Expense</h2>
-                <form action="budget.php" method="post">
-                   <div class="row">
-                       <div class="col-md-8">
-                        <h3>Expense</h3>
-                        <input class="form-control" type="text" name="expense" id="expense">    
-                        </div>
-                        <div class="col-md-4">
-                            <h3>Amount</h3>
-                            <input class="form-control" type="number" step="any" name="expense-amount" id="expense-amount">    
-                        </div>    
-                    </div>
-                    <input class="btn btn-primary" type="submit" name="submit-expense" id="submit-expense">
-                </form>    
+                <h2 class="page-header">Income</h2>
+                <ul class="list-group list-group-flush pt-3">
+                    <li class="list-group-item">Cras justo odio</li>
+                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Morbi leo risus</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                </ul>    
+            </div>
+            <div class="col-md-6">
+                <h2 class="page-header">Expenses</h2>
+                <ul class="list-group list-group-flush pt-3">
+                    <li class="list-group-item">Cras justo odio</li>
+                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Morbi leo risus</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
             </div>    
-        </div>      
-    </div>      
+        </div>
+        
+    </div>                 
+ 
+<script src="public/js/script.js" type="text/javascript"></script>  
+<script src="public/js/ajax.js" type="text/javascript"></script>  
 </body>
 </html>
 
