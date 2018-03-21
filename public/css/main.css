@@ -14,7 +14,36 @@
     box-shadow: none;
 }
 
+#submit:focus {
+    outline: none !important;
+    box-shadow: none;
+}
+
 .red-focus {
     border: 1px solid #dc3545 !important;
     color: #dc3545 !important;
 }
+
+.trash-can-span:hover>.fa-trash-alt {
+    color: #dc3545 !important;
+}
+.fa-trash-alt {
+    cursor: pointer;
+    color: grey !important;
+}
+.edit-span:hover>.fa-edit {
+    color: #007bff !important;
+}
+.fa-edit {
+    cursor: pointer;
+    color: grey !important;
+}
+
+.edit-form {
+    display: none;
+}
+
+.edit-form input {
+    border: 1px solid #007bff!important;
+}
+

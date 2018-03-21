@@ -23,10 +23,5 @@ var submitBtn = document.getElementById('submit');
 typeSelect.addEventListener('change', function(){
     typeSelect.classList.toggle('red-focus');
     submitBtn.classList.toggle('btn-outline-danger');
-//    if (submitBtn.value === 'Add Expense') {
-//        submitBtn.value = 'Add Income';    
-//    } else {
-//        submitBtn.value = 'Add Expense';
-//    }   
 });
 
