@@ -3,6 +3,7 @@
 $dbh = new PDO('mysql:host=localhost;dbname=budget_app_db', 'root', 'mysql_matBras1992');
 $now = date('Y-m-d');
 $currentMonth = intval(date('n'));
+$currentYear = intval(date('Y'));
 
 $budgetStmt = $dbh->prepare('SELECT month FROM budget ORDER BY id DESC LIMIT 1');
 $budgetStmt->execute();
@@ -21,10 +22,11 @@ if (isset($_POST['submit'])) {
             $updateBudgetStmt->bindParam(1, $_POST['amount']);
             $updateBudgetStmt->execute();
         } else {
-            $newBudgetStmt = $dbh->prepare('INSERT INTO budget (month, total_income, total_budget) VALUES (?, ?, ?)');
+            $newBudgetStmt = $dbh->prepare('INSERT INTO budget (month, year, total_income, total_budget) VALUES (?, ?, ?, ?)');
             $newBudgetStmt->bindParam(1, $currentMonth, PDO::PARAM_INT);
-            $newBudgetStmt->bindParam(2, $_POST['amount']);
+            $newBudgetStmt->bindParam(2, $currentYear, PDO::PARAM_INT);
             $newBudgetStmt->bindParam(3, $_POST['amount']);
+            $newBudgetStmt->bindParam(4, $_POST['amount']);
             $newBudgetStmt->execute();
         }
     }
@@ -40,11 +42,12 @@ if (isset($_POST['submit'])) {
             $updateBudgetStmt->bindParam(1, $_POST['amount']);
             $updateBudgetStmt->execute();
         } else {
-            $newBudgetStmt = $dbh->prepare('INSERT INTO budget (month, total_expense, total_budget) VALUES (?, ?, ?)');
+            $newBudgetStmt = $dbh->prepare('INSERT INTO budget (month, year, total_expense, total_budget) VALUES (?, ?, ?, ?)');
             $newBudgetStmt->bindParam(1, $currentMonth, PDO::PARAM_INT);
-            $newBudgetStmt->bindParam(2, $_POST['amount']);
+            $newBudgetStmt->bindParam(2, $currentYear, PDO::PARAM_INT);
+            $newBudgetStmt->bindParam(3, $_POST['amount']);
             $new_total_budget = 0.00 - $_POST['amount'];
-            $newBudgetStmt->bindParam(3, $new_total_budget);
+            $newBudgetStmt->bindParam(4, $new_total_budget);
             $newBudgetStmt->execute();
         }
     }

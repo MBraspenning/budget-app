@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS `budget`;
 CREATE TABLE `budget`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `month` INT NOT NULL,
+    `year` INT NOT NULL,
     `total_income` DECIMAL(12,2) NOT NULL DEFAULT 0.0,
     `total_expense` DECIMAL(12,2) NOT NULL DEFAULT 0.0,
     `total_budget` DECIMAL(12,2) NOT NULL DEFAULT 0.0,
@@ -31,4 +32,4 @@ CREATE TABLE `expense`(
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
 
-INSERT INTO `budget` (`month`, `total_budget`, `total_income`, `total_expense`) VALUES (MONTH(NOW()) ,0.00, 0.00, 0.00);
+INSERT INTO `budget` (`month`, `year`, `total_budget`, `total_income`, `total_expense`) VALUES (MONTH(NOW()), YEAR(NOW()) ,0.00, 0.00, 0.00);

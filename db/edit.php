@@ -11,11 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
         
         $currentIncomeAmount = $getIncomeStmt->fetch(PDO::FETCH_ASSOC);
                 
-        $stmt = $dbh->prepare('UPDATE income SET income = ?, amount = ?, added_date = ? WHERE id = ?');
+        $stmt = $dbh->prepare('UPDATE income SET income = ?, amount = ? WHERE id = ?');
         $stmt->bindParam(1, $_GET['description'], PDO::PARAM_STR);        
         $stmt->bindParam(2, intval($_GET['amount']), PDO::PARAM_INT);        
-        $stmt->bindParam(3, $now);        
-        $stmt->bindParam(4, intval($_GET['id']), PDO::PARAM_INT);        
+        $stmt->bindParam(3, intval($_GET['id']), PDO::PARAM_INT);        
         $stmt->execute();
         
         $updateTotalIncomeAmount = intval($_GET['amount']) - intval($currentIncomeAmount['amount']);
@@ -31,11 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
         
         $currentExpenseAmount = $getExpenseStmt->fetch(PDO::FETCH_ASSOC);
         
-        $stmt = $dbh->prepare('UPDATE expense SET expense = ?, amount = ?, added_date = ? WHERE id = ?');
+        $stmt = $dbh->prepare('UPDATE expense SET expense = ?, amount = ? WHERE id = ?');
         $stmt->bindParam(1, $_GET['description'], PDO::PARAM_STR);        
         $stmt->bindParam(2, intval($_GET['amount']), PDO::PARAM_INT);        
-        $stmt->bindParam(3, $now);        
-        $stmt->bindParam(4, intval($_GET['id']), PDO::PARAM_INT);        
+        $stmt->bindParam(3, intval($_GET['id']), PDO::PARAM_INT);        
         $stmt->execute();
         
         $updateTotalExpenseAmount = intval($_GET['amount']) - intval($currentExpenseAmount['amount']);

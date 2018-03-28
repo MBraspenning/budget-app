@@ -1,8 +1,8 @@
 loadData();
 
 document.getElementById('submit').addEventListener('click', addIncExp);
-document.getElementById('income-list').addEventListener('click', editIncomeItem);
-document.getElementById('expense-list').addEventListener('click', editExpenseItem);
+document.getElementById('income-list').addEventListener('click', editItem);
+document.getElementById('expense-list').addEventListener('click', editItem);
 
 function addIncExp(e) {
     e.preventDefault();
@@ -15,7 +15,7 @@ function addIncExp(e) {
     var params = "submit=" + submit + "&select-type=" + selectType + "&description=" + description + "&amount=" + amount;
     
     var xhrAdd = new XMLHttpRequest();
-    xhrAdd.open('POST', 'db/insert.php', true);
+    xhrAdd.open('POST', '/db/insert.php', true);
     xhrAdd.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhrAdd.onload = function() {
         if(this.status === 200) {  
@@ -36,57 +36,55 @@ function showEditForm(index, type) {
     }
 }
 
-function editIncomeItem(e) {
+function editItem(e) {
     e.preventDefault();
-    
     var itemId = e.target.id;
-    if (!isNaN(itemId) && itemId > 0) {
-        var description = document.getElementById('income-description'+itemId).value;
-        var amount = document.getElementById('income-amount'+itemId).value;
-        
-        var params = "id=" + itemId + "&type=income&description=" + description + "&amount=" + amount;
-        
-        var xhrEdit = new XMLHttpRequest();
-        xhrEdit.open('PUT', 'db/edit.php?'+params, true);
-        xhrEdit.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhrEdit.onload = function() {
-            if (this.status === 200) {
-            }
-        }
-        xhrEdit.send();
-        loadData();
-        showEditForm();
-
-    }
-}
-
-function editExpenseItem(e) {
-    e.preventDefault();
     
-    var itemId = e.target.id;
-    if (!isNaN(itemId) && itemId > 0) {
-        var description = document.getElementById('expense-description'+itemId).value;
-        var amount = document.getElementById('expense-amount'+itemId).value;
-        
-        var params = "id=" + itemId + "&type=expense&description=" + description + "&amount=" + amount;
-        
-        var xhrEdit = new XMLHttpRequest();
-        xhrEdit.open('PUT', 'db/edit.php?'+params, true);
-        xhrEdit.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhrEdit.onload = function() {
-            if (this.status === 200) {
-            }
-        }
-        xhrEdit.send();
-        loadData();
-        showEditForm();
+    if (e.target.parentElement.parentElement.parentElement.parentElement.parentElement.id === 'income-list') {
+        if (!isNaN(itemId) && itemId > 0) {
+            var description = document.getElementById('income-description'+itemId).value;
+            var amount = document.getElementById('income-amount'+itemId).value;
 
+            var params = "id=" + itemId + "&type=income&description=" + description + "&amount=" + amount;
+
+            var xhrEdit = new XMLHttpRequest();
+            xhrEdit.open('PUT', '/db/edit.php?'+params, true);
+            xhrEdit.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhrEdit.onload = function() {
+                if (this.status === 200) {
+                }
+            }
+            xhrEdit.send();
+            loadData();
+            showEditForm();
+        }   
     }
+    
+    if (e.target.parentElement.parentElement.parentElement.parentElement.parentElement.id === 'expense-list') {
+        if (!isNaN(itemId) && itemId > 0) {
+            var description = document.getElementById('expense-description'+itemId).value;
+            var amount = document.getElementById('expense-amount'+itemId).value;
+
+            var params = "id=" + itemId + "&type=expense&description=" + description + "&amount=" + amount;
+
+            var xhrEdit = new XMLHttpRequest();
+            xhrEdit.open('PUT', '/db/edit.php?'+params, true);
+            xhrEdit.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhrEdit.onload = function() {
+                if (this.status === 200) {
+                }
+            }
+            xhrEdit.send();
+            loadData();
+            showEditForm();
+        }    
+    }
+
 }
 
 function deleteIncExp(id, type, amount) {    
     var xhrDelete = new XMLHttpRequest();
-    xhrDelete.open('DELETE', 'db/delete.php?id='+id+'&type='+type+'&amount='+amount, true);
+    xhrDelete.open('DELETE', '/db/delete.php?id='+id+'&type='+type+'&amount='+amount, true);
     xhrDelete.send();
     loadData();
 }
@@ -94,7 +92,7 @@ function deleteIncExp(id, type, amount) {
 function loadData() {
     var xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'db/fetch.php', true);
+    xhr.open('GET', '/db/fetch.php?month=current&year=current', true);
     xhr.onload = function() {
         if(this.status === 200) {
             var responseData = JSON.parse(this.responseText);
@@ -111,7 +109,7 @@ function loadData() {
             expenseDOM.innerHTML = 'Total Expenses : € ' + budget[0].total_expense;
 
             var incomeOuput = '';
-            for(var i = income.length - 1; i >= 0; i--) {
+            for (var i = income.length - 1; i >= 0; i--) {
                 incomeOuput += '<li class=\'list-group-item\'>'
                         +income[i].income+
                         '<span class=\'text-success float-right list-amount\'>+ '
