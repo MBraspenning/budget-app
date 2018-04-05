@@ -1,6 +1,6 @@
 <?php
 
-require_once('config.php');
+require_once('../config.php');
 
 $dbh = new PDO($db_dsn, $db_user, $db_password);
 
