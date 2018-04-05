@@ -1,6 +1,9 @@
 <?php
 
-$dbh = new PDO('mysql:host=localhost;dbname=budget_app_db', 'root', 'mysql_matBras1992');
+require_once('config.php');
+
+$dbh = new PDO($db_dsn, $db_user, $db_password);
+
 $now = date('Y-m-d');
 $currentMonth = intval(date('n'));
 $currentYear = intval(date('Y'));

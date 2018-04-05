@@ -3,7 +3,9 @@
     
 <?php
 
-    $dbh = new PDO('mysql:host=localhost;dbname=budget_app_db', 'root', 'mysql_matBras1992');
+    require_once('../config.php');
+
+    $dbh = new PDO($db_dsn, $db_user, $db_password);
     $fetchAllDates = $dbh->prepare('SELECT added_date FROM income');
     $fetchAllDates->execute();
 
