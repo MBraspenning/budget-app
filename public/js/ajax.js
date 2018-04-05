@@ -104,9 +104,24 @@ function loadData() {
             var budgetAmountDOM = document.getElementById('monthly-budget-amount');
             var incomeDOM = document.getElementById('total-income');
             var expenseDOM = document.getElementById('total-expense');
-            budgetAmountDOM.innerHTML = budget[0].total_budget;
-            incomeDOM.innerHTML = 'Total Income : € ' + budget[0].total_income;
-            expenseDOM.innerHTML = 'Total Expenses : € ' + budget[0].total_expense;
+            
+            var totalBudget;
+            var totalIncome;
+            var totalExpense;
+            
+            if (typeof(budget[0]) === 'undefined') {
+                totalBudget = '0.00';
+                totalIncome = '0.00';
+                totalExpense = '0.00';
+            } else {
+                totalBudget = budget[0].total_budget;
+                totalIncome = budget[0].total_income;
+                totalExpense = budget[0].total_expense;
+            }
+                        
+            budgetAmountDOM.innerHTML = totalBudget;
+            incomeDOM.innerHTML = 'Total Income : € ' + totalIncome;
+            expenseDOM.innerHTML = 'Total Expenses : € ' + totalExpense;
 
             var incomeOuput = '';
             for (var i = income.length - 1; i >= 0; i--) {

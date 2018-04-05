@@ -19,7 +19,7 @@
 ?>
    
 <div class="container">
-    <h1 class="page-header text-center mb-5">Archive</h1>  
+    <h1 class="page-header text-center mb-5 mt-4">Archive</h1>  
     <div class="row  mb-5">
         <div class="col-md-8 mx-auto">
             <form action="/db/archive/fetch.php" method="POST">
