@@ -1,22 +1,5 @@
 <?php
 
-echo 'hello world!';
+require_once('../app/bootstrap.php');
 
-//require_once('../app/bootstrap.php');
-
-//$request_uri = explode('?', $_SERVER['REQUEST_URI'], 2);
-//
-//switch ($request_uri[0]) {
-//    case '/':
-//        require 'views/home.php';
-//        break;
-//    case '/index.php':
-//        require 'views/home.php';
-//        break;
-//    case '/index':
-//        require 'views/home.php';
-//        break;
-//    case '/archive':
-//        require 'views/archive.php';
-//        break;
-//}
+$core = new AppCore();
