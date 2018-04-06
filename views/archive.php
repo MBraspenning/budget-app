@@ -1,5 +1,5 @@
-<?php include 'header.php'; ?>   
-<?php include 'navigation.php'; ?>
+<?php include 'views/partials/header.php'; ?>   
+<?php include 'views/partials/navigation.php'; ?>
     
 <?php
 
@@ -72,4 +72,4 @@
 </div>
      
 <script src="/public/js/archive-ajax.js" type="text/javascript"></script>      
-<?php include 'footer.php'; ?>
+<?php include 'views/partials/footer.php'; ?>

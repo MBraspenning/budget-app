@@ -1,5 +1,5 @@
-<?php include 'views/header.php'; ?>
-<?php include 'views/navigation.php'; ?>
+<?php include 'views/partials/header.php'; ?>
+<?php include 'views/partials/navigation.php'; ?>
 
 <div class="container">
 
@@ -58,4 +58,4 @@
     
 <script src="/public/js/ajax.js" type="text/javascript"></script>  
 <script src="/public/js/script.js" type="text/javascript"></script>                 
-<?php include 'views/footer.php'; ?>
+<?php include 'views/partials/footer.php'; ?>
