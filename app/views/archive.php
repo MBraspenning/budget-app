@@ -1,22 +1,22 @@
-<?php include 'views/partials/header.php'; ?>   
-<?php include 'views/partials/navigation.php'; ?>
+<?php include APPROOT . '/views/partials/header.php'; ?>   
+<?php include APPROOT . '/views/partials/navigation.php'; ?>
     
 <?php
 
-    require_once('config.php');
-
-    $dbh = new PDO($db_dsn, $db_user, $db_password);
-    $fetchAllDates = $dbh->prepare('SELECT added_date FROM income');
-    $fetchAllDates->execute();
-
-    $allDates = $fetchAllDates->fetchAll(PDO::FETCH_ASSOC);
-
-    $years = [];
-
-    foreach($allDates as $date) {
-        $years[] = substr($date['added_date'], 0, 4);
-    }
-    $yearsUnique = array_unique($years);
+//    require_once('config.php');
+//
+//    $dbh = new PDO($db_dsn, $db_user, $db_password);
+//    $fetchAllDates = $dbh->prepare('SELECT added_date FROM income');
+//    $fetchAllDates->execute();
+//
+//    $allDates = $fetchAllDates->fetchAll(PDO::FETCH_ASSOC);
+//
+//    $years = [];
+//
+//    foreach($allDates as $date) {
+//        $years[] = substr($date['added_date'], 0, 4);
+//    }
+//    $yearsUnique = array_unique($years);
 
 ?>
    
@@ -71,5 +71,5 @@
     
 </div>
      
-<script src="/public/js/archive-ajax.js" type="text/javascript"></script>      
-<?php include 'views/partials/footer.php'; ?>
+<script src="<?php echo URLROOT ?>/js/archive-ajax.js" type="text/javascript"></script>      
+<?php include APPROOT . '/views/partials/footer.php'; ?>

@@ -47,3 +47,7 @@
     border: 1px solid #007bff!important;
 }
 
+#total-income, #total-expense {
+    min-height: 50px;
+}
+
