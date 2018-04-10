@@ -54,7 +54,8 @@
     </div>
         
 </div>  
-    
+
+<script src="<?php echo URLROOT ?>/js/test-ajax.js" type="text/javascript"></script>  
 <script src="<?php echo URLROOT ?>/js/ajax.js" type="text/javascript"></script>  
 <script src="<?php echo URLROOT ?>/js/script.js" type="text/javascript"></script>                 
 <?php include APPROOT . '/views/partials/footer.php'; ?>

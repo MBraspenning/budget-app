@@ -92,7 +92,7 @@ function deleteIncExp(id, type, amount) {
 function loadData() {
     var xhr = new XMLHttpRequest();
 
-    xhr.open('GET', '/app/db/fetch.php?month=current&year=current', true);
+    xhr.open('GET', '/db/fetch.php?month=current&year=current', true);
     xhr.onload = function() {
         if(this.status === 200) {
             var responseData = JSON.parse(this.responseText);
