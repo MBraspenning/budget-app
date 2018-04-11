@@ -1,98 +1,101 @@
+const urlroot = 'http://localhost/budgetapp';
+
 loadData();
-
-document.getElementById('submit').addEventListener('click', addIncExp);
-document.getElementById('income-list').addEventListener('click', editItem);
-document.getElementById('expense-list').addEventListener('click', editItem);
-
-function addIncExp(e) {
-    e.preventDefault();
-    
-    var submit = document.getElementById('submit').value;
-    var selectType = document.getElementById('select-type').value;
-    var description = document.getElementById('description').value;
-    var amount = document.getElementById('amount').value;
-    
-    var params = "submit=" + submit + "&select-type=" + selectType + "&description=" + description + "&amount=" + amount;
-    
-    var xhrAdd = new XMLHttpRequest();
-    xhrAdd.open('POST', '/db/insert.php', true);
-    xhrAdd.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhrAdd.onload = function() {
-        if(this.status === 200) {  
-        }
-    }
-    xhrAdd.send(params);
-    document.getElementById('description').value = '';
-    document.getElementById('amount').value = '';
-    loadData();
-}
-
-function showEditForm(index, type) {
-    var editForm = document.getElementById(type+'-edit-form-'+index);
-    if (editForm.style.display === '') {
-        editForm.style.display = 'block';
-    } else {
-        editForm.style.display = '';
-    }
-}
-
-function editItem(e) {
-    e.preventDefault();
-    var itemId = e.target.id;
-    
-    if (e.target.parentElement.parentElement.parentElement.parentElement.parentElement.id === 'income-list') {
-        if (!isNaN(itemId) && itemId > 0) {
-            var description = document.getElementById('income-description'+itemId).value;
-            var amount = document.getElementById('income-amount'+itemId).value;
-
-            var params = "id=" + itemId + "&type=income&description=" + description + "&amount=" + amount;
-
-            var xhrEdit = new XMLHttpRequest();
-            xhrEdit.open('PUT', '/db/edit.php?'+params, true);
-            xhrEdit.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhrEdit.onload = function() {
-                if (this.status === 200) {
-                }
-            }
-            xhrEdit.send();
-            loadData();
-            showEditForm();
-        }   
-    }
-    
-    if (e.target.parentElement.parentElement.parentElement.parentElement.parentElement.id === 'expense-list') {
-        if (!isNaN(itemId) && itemId > 0) {
-            var description = document.getElementById('expense-description'+itemId).value;
-            var amount = document.getElementById('expense-amount'+itemId).value;
-
-            var params = "id=" + itemId + "&type=expense&description=" + description + "&amount=" + amount;
-
-            var xhrEdit = new XMLHttpRequest();
-            xhrEdit.open('PUT', '/db/edit.php?'+params, true);
-            xhrEdit.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhrEdit.onload = function() {
-                if (this.status === 200) {
-                }
-            }
-            xhrEdit.send();
-            loadData();
-            showEditForm();
-        }    
-    }
-
-}
-
-function deleteIncExp(id, type, amount) {    
-    var xhrDelete = new XMLHttpRequest();
-    xhrDelete.open('DELETE', '/db/delete.php?id='+id+'&type='+type+'&amount='+amount, true);
-    xhrDelete.send();
-    loadData();
-}
+//
+//document.getElementById('submit').addEventListener('click', addIncExp);
+//document.getElementById('income-list').addEventListener('click', editItem);
+//document.getElementById('expense-list').addEventListener('click', editItem);
+//
+//function addIncExp(e) {
+//    e.preventDefault();
+//    
+//    var submit = document.getElementById('submit').value;
+//    var selectType = document.getElementById('select-type').value;
+//    var description = document.getElementById('description').value;
+//    var amount = document.getElementById('amount').value;
+//    
+//    var params = "submit=" + submit + "&select-type=" + selectType + "&description=" + description + "&amount=" + amount;
+//    
+//    var xhrAdd = new XMLHttpRequest();
+//    xhrAdd.open('POST', '/db/insert.php', true);
+//    xhrAdd.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+//    xhrAdd.onload = function() {
+//        if(this.status === 200) {  
+//        }
+//    }
+//    xhrAdd.send(params);
+//    document.getElementById('description').value = '';
+//    document.getElementById('amount').value = '';
+//    loadData();
+//}
+//
+//function showEditForm(index, type) {
+//    var editForm = document.getElementById(type+'-edit-form-'+index);
+//    if (editForm.style.display === '') {
+//        editForm.style.display = 'block';
+//    } else {
+//        editForm.style.display = '';
+//    }
+//}
+//
+//function editItem(e) {
+//    e.preventDefault();
+//    var itemId = e.target.id;
+//    
+//    if (e.target.parentElement.parentElement.parentElement.parentElement.parentElement.id === 'income-list') {
+//        if (!isNaN(itemId) && itemId > 0) {
+//            var description = document.getElementById('income-description'+itemId).value;
+//            var amount = document.getElementById('income-amount'+itemId).value;
+//
+//            var params = "id=" + itemId + "&type=income&description=" + description + "&amount=" + amount;
+//
+//            var xhrEdit = new XMLHttpRequest();
+//            xhrEdit.open('PUT', '/db/edit.php?'+params, true);
+//            xhrEdit.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+//            xhrEdit.onload = function() {
+//                if (this.status === 200) {
+//                }
+//            }
+//            xhrEdit.send();
+//            loadData();
+//            showEditForm();
+//        }   
+//    }
+//    
+//    if (e.target.parentElement.parentElement.parentElement.parentElement.parentElement.id === 'expense-list') {
+//        if (!isNaN(itemId) && itemId > 0) {
+//            var description = document.getElementById('expense-description'+itemId).value;
+//            var amount = document.getElementById('expense-amount'+itemId).value;
+//
+//            var params = "id=" + itemId + "&type=expense&description=" + description + "&amount=" + amount;
+//
+//            var xhrEdit = new XMLHttpRequest();
+//            xhrEdit.open('PUT', '/db/edit.php?'+params, true);
+//            xhrEdit.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+//            xhrEdit.onload = function() {
+//                if (this.status === 200) {
+//                }
+//            }
+//            xhrEdit.send();
+//            loadData();
+//            showEditForm();
+//        }    
+//    }
+//
+//}
+//
+//function deleteIncExp(id, type, amount) {    
+//    var xhrDelete = new XMLHttpRequest();
+//    xhrDelete.open('DELETE', '/db/delete.php?id='+id+'&type='+type+'&amount='+amount, true);
+//    xhrDelete.send();
+//    loadData();
+//}
+//
 
 function loadData() {
     var xhr = new XMLHttpRequest();
 
-    xhr.open('GET', '/db/fetch.php?month=current&year=current', true);
+    xhr.open('GET', urlroot + '/ajax/fetch', true);
     xhr.onload = function() {
         if(this.status === 200) {
             var responseData = JSON.parse(this.responseText);

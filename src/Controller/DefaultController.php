@@ -8,12 +8,8 @@ class DefaultController extends Controller
     }
     
     public function indexAction()
-    {
-        $income = $this->incomeModel->getAllIncome();
-        
-        $this->view('home', array(
-            'income' => $income
-        ));
+    {        
+        $this->view('home');
     }
     
     public function archiveAction()
