@@ -31,4 +31,17 @@ class Income
         
         return $results;
     }
+    
+    public function insertIncome(string $inc_description, int $amount)
+    {
+        $now = date('Y-m-d');
+        
+        $this->db->query("INSERT INTO income (income, amount, added_date) VALUES (:income, :amount, :added_date)");
+        
+        $this->db->bind(':income', $inc_description);
+        $this->db->bind(':amount', $amount);
+        $this->db->bind(':added_date', $now);
+        
+        $this->db->executeStmt();
+    }
 }

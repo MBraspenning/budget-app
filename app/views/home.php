@@ -13,7 +13,7 @@
                         <li class="list-group-item list-group-item-danger" id="total-expense"></li>
                     </ul>
                 </div>
-            <form action="db/insert.php" method="post">
+            <form action="<?php echo URLROOT ?>/ajax/insert" method="post">
                 <div class="row">
                     <div class="col-md-2">
                         <select class="form-control" name="select-type" id="select-type">

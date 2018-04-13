@@ -1,34 +1,34 @@
 const urlroot = 'http://localhost/budgetapp';
 
 loadData();
-//
-//document.getElementById('submit').addEventListener('click', addIncExp);
+
+document.getElementById('submit').addEventListener('click', addIncExp);
 //document.getElementById('income-list').addEventListener('click', editItem);
 //document.getElementById('expense-list').addEventListener('click', editItem);
-//
-//function addIncExp(e) {
-//    e.preventDefault();
-//    
-//    var submit = document.getElementById('submit').value;
-//    var selectType = document.getElementById('select-type').value;
-//    var description = document.getElementById('description').value;
-//    var amount = document.getElementById('amount').value;
-//    
-//    var params = "submit=" + submit + "&select-type=" + selectType + "&description=" + description + "&amount=" + amount;
-//    
-//    var xhrAdd = new XMLHttpRequest();
-//    xhrAdd.open('POST', '/db/insert.php', true);
-//    xhrAdd.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-//    xhrAdd.onload = function() {
-//        if(this.status === 200) {  
-//        }
-//    }
-//    xhrAdd.send(params);
-//    document.getElementById('description').value = '';
-//    document.getElementById('amount').value = '';
-//    loadData();
-//}
-//
+
+function addIncExp(e) {
+    e.preventDefault();
+    
+    var submit = document.getElementById('submit').value;
+    var selectType = document.getElementById('select-type').value;
+    var description = document.getElementById('description').value;
+    var amount = document.getElementById('amount').value;
+    
+    var params = "submit=" + submit + "&select-type=" + selectType + "&description=" + description + "&amount=" + amount;
+    
+    var xhrAdd = new XMLHttpRequest();
+    xhrAdd.open('POST', urlroot + '/ajax/insert', true);
+    xhrAdd.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhrAdd.onload = function() {
+        if(this.status === 200) {
+        }
+    }
+    xhrAdd.send(params);
+    document.getElementById('description').value = '';
+    document.getElementById('amount').value = '';
+    loadData();
+}
+
 //function showEditForm(index, type) {
 //    var editForm = document.getElementById(type+'-edit-form-'+index);
 //    if (editForm.style.display === '') {

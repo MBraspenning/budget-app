@@ -31,4 +31,17 @@ class Expense
         
         return $results;
     }
+    
+    public function insertExpense(string $exp_description, int $amount)
+    {
+        $now = date('Y-m-d');
+        
+        $this->db->query("INSERT INTO expense (expense, amount, added_date) VALUES (:expense, :amount, :added_date)");
+        
+        $this->db->bind(':expense', $exp_description);
+        $this->db->bind(':amount', $amount);
+        $this->db->bind(':added_date', $now);
+        
+        $this->db->executeStmt();
+    }
 }
