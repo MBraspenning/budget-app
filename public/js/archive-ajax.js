@@ -1,3 +1,5 @@
+const urlroot = 'http://localhost/budgetapp';
+
 document.getElementById('getArchive').addEventListener('click', fetchArchive);
 
 var months = [
@@ -22,9 +24,9 @@ function fetchArchive(e) {
     var year = document.getElementById('year').value;
     
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/db/fetch.php?month='+month+'&year='+year, true);
+    xhr.open('GET', urlroot + '/ajax/fetch?month='+month+'&year='+year, true);
     xhr.onload = function() {
-        if(this.status === 200) {
+        if(this.status === 200) {            
             var responseData = JSON.parse(this.responseText);
             var budget = JSON.parse(responseData[0]);
             var income = JSON.parse(responseData[1]);

@@ -18,18 +18,26 @@ class Income
         return $results;
     }
     
-    public function getAllIncomeForCurrentMonth()
+    public function getAllIncomeForMonth(int $M, int $Y)
     {
-        $month = intval(date('n'));
-        $year = intval(date('Y'));
         $this->db->query("SELECT * FROM income WHERE MONTH(added_date) = :month AND YEAR(added_date) = :year");
         
-        $this->db->bind(':month', $month);
-        $this->db->bind(':year', $year);
+        $this->db->bind(':month', $M);
+        $this->db->bind(':year', $Y);
         
         $results = $this->db->resultSet();
         
         return $results;
+    }
+    
+    public function getAmountForOneResult(int $id)
+    {
+        $this->db->query("SELECT amount FROM income WHERE id = :id");
+        $this->db->bind(':id', $id);
+        
+        $result = $this->db->single();
+        
+        return $result;
     }
     
     public function insertIncome(string $inc_description, int $amount)
@@ -41,6 +49,26 @@ class Income
         $this->db->bind(':income', $inc_description);
         $this->db->bind(':amount', $amount);
         $this->db->bind(':added_date', $now);
+        
+        $this->db->executeStmt();
+    }
+    
+    public function editIncome(string $description, int $amount, int $id)
+    {
+        $this->db->query("UPDATE income SET income = :description, amount = :amount WHERE id = :id");
+        
+        $this->db->bind(':description', $description);
+        $this->db->bind(':amount', $amount);
+        $this->db->bind(':id', $id);
+        
+        $this->db->executeStmt();
+    }
+    
+    public function deleteIncome(int $id)
+    {
+        $this->db->query("DELETE FROM income WHERE id = :id");
+        
+        $this->db->bind(':id', $id);
         
         $this->db->executeStmt();
     }

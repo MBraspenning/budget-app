@@ -14,6 +14,16 @@ class DefaultController extends Controller
     
     public function archiveAction()
     {
-        $this->view('archive');
+        $fetchAll = $this->incomeModel->getAllIncome();
+        $years = [];
+        
+        foreach($fetchAll as $el) {
+            $years[] = substr($el->added_date, 0, 4);
+        }
+        $yearsUnique = array_unique($years);
+        
+        $this->view('archive', array(
+            'yearsUnique' => $yearsUnique
+        ));
     }
 }

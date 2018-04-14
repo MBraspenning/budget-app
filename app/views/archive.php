@@ -1,25 +1,6 @@
 <?php include APPROOT . '/views/partials/header.php'; ?>   
-<?php include APPROOT . '/views/partials/navigation.php'; ?>
-    
-<?php
-
-//    require_once('config.php');
-//
-//    $dbh = new PDO($db_dsn, $db_user, $db_password);
-//    $fetchAllDates = $dbh->prepare('SELECT added_date FROM income');
-//    $fetchAllDates->execute();
-//
-//    $allDates = $fetchAllDates->fetchAll(PDO::FETCH_ASSOC);
-//
-//    $years = [];
-//
-//    foreach($allDates as $date) {
-//        $years[] = substr($date['added_date'], 0, 4);
-//    }
-//    $yearsUnique = array_unique($years);
-
-?>
-   
+<?php include APPROOT . '/views/partials/navigation.php'; ?>    
+  
 <div class="container">
     <h1 class="page-header text-center mb-5 mt-4">Archive</h1>  
     <div class="row  mb-5">
@@ -47,7 +28,7 @@
                         <select class="form-control" name="year" id="year">
                             <option selected disabled>Year</option>
                             <?php
-                                foreach($yearsUnique as $year) {
+                                foreach($data['yearsUnique'] as $year) {
                                     echo '<option value="'.$year.'">'.$year.'</option>';
                                 }
                             ?>

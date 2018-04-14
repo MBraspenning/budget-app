@@ -18,14 +18,12 @@ class Budget
         return $results;
     }
     
-    public function getAllBudgetForCurrentMonth()
+    public function getAllBudgetForMonth(int $M, int $Y)
     {
-        $month = intval(date('n'));
-        $year = intval(date('Y'));
         $this->db->query("SELECT * FROM budget WHERE month = :month AND year = :year ORDER BY id DESC LIMIT 1");
         
-        $this->db->bind(':month', $month);
-        $this->db->bind(':year', $year);
+        $this->db->bind(':month', $M);
+        $this->db->bind(':year', $Y);
         
         $results = $this->db->resultSet();
         
@@ -61,17 +59,31 @@ class Budget
         $this->db->executeStmt();
     }
     
-    public function updateBudget($amount, $type)
+    public function updateBudget(int $amount, string $type, string $action)
     {
         if ($type === 'income') {
-            $this->db->query("UPDATE budget SET total_income = total_income + :amount, total_budget = total_income - total_expense ORDER BY id DESC LIMIT 1"); 
-            $this->db->bind(':amount', $amount);
-            $this->db->executeStmt();
+            if ($action === 'insert' || $action === 'edit') {
+                $this->db->query("UPDATE budget SET total_income = total_income + :amount, total_budget = total_income - total_expense ORDER BY id DESC LIMIT 1"); 
+                $this->db->bind(':amount', $amount);
+                $this->db->executeStmt();    
+            }
+            if ($action === 'delete') {
+                $this->db->query('UPDATE budget SET total_income = total_income - :amount, total_budget = total_income - total_expense ORDER BY id DESC LIMIT 1');
+                $this->db->bind(':amount', $amount);
+                $this->db->executeStmt();
+            }
         }
         if ($type === 'expense') {
-            $this->db->query("UPDATE budget SET total_expense = total_expense + :amount, total_budget = total_income - total_expense ORDER BY id DESC LIMIT 1");
-            $this->db->bind(':amount', $amount);
-            $this->db->executeStmt();
+            if ($action === 'insert' || $action === 'edit') {
+                $this->db->query("UPDATE budget SET total_expense = total_expense + :amount, total_budget = total_income - total_expense ORDER BY id DESC LIMIT 1");
+                $this->db->bind(':amount', $amount);
+                $this->db->executeStmt();    
+            }  
+            if ($action === 'delete') {
+                $this->db->query('UPDATE budget SET total_expense = total_expense - :amount, total_budget = total_income - total_expense ORDER BY id DESC LIMIT 1');
+                $this->db->bind(':amount', $amount);
+                $this->db->executeStmt();
+            }
         } 
     }
 }
