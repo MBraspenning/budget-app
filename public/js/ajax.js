@@ -20,13 +20,13 @@ function addIncExp(e) {
     xhrAdd.open('POST', urlroot + '/ajax/insert', true);
     xhrAdd.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhrAdd.onload = function() {
-        if(this.status === 200) {
+        if(this.status === 200 && this.readyState === 4) {
+            loadData();
         }
     }
     xhrAdd.send(params);
     document.getElementById('description').value = '';
     document.getElementById('amount').value = '';
-    loadData();
 }
 
 function showEditForm(index, type) {
@@ -53,13 +53,12 @@ function editItem(e) {
             xhrEdit.open('PUT', urlroot + '/ajax/edit?'+params, true);
             xhrEdit.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhrEdit.onload = function() {
-                if (this.status === 200) {
-                    console.log(this.responseText);
+                if (this.status === 200 && this.readyState === 4) {
+                    loadData();
+                    showEditForm();
                 }
             }
-            xhrEdit.send();
-            loadData();
-            showEditForm();
+            xhrEdit.send(); 
         }   
     }
     
@@ -74,13 +73,12 @@ function editItem(e) {
             xhrEdit.open('PUT', urlroot + '/ajax/edit?'+params, true);
             xhrEdit.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhrEdit.onload = function() {
-                if (this.status === 200) {
-                    console.log(this.responseText);
+                if (this.status === 200 && this.readyState) {
+                    loadData();
+                    showEditForm();
                 }
             }
             xhrEdit.send();
-            loadData();
-            showEditForm();
         }    
     }
 
@@ -91,15 +89,15 @@ function deleteIncExp(id, type, amount) {
     xhrDelete.open('DELETE', urlroot + '/ajax/delete?id='+id+'&type='+type+'&amount='+amount, true);
     xhrDelete.onload = function() {
         if(this.status === 200) {
-            console.log(this.responseText);
+            loadData();        
         }
     }
     xhrDelete.send();
-    loadData();
 }
 
 
 function loadData() {
+    console.log('load function');
     var xhr = new XMLHttpRequest();
 
     xhr.open('GET', urlroot + '/ajax/fetch', true);
@@ -167,7 +165,6 @@ function loadData() {
                         +'</div>'
                         +'</form>'
                         +'</li>';  
-                
             }
 
             document.getElementById('income-list').innerHTML = incomeOuput;
