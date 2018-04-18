@@ -13,7 +13,7 @@ class UserController extends Controller
             
         } else {
             $data = [
-                'username' => 'Matthijs',
+                'username' => '',
                 'email' => '',
                 'password' => '',
                 'confirm_password' => '',
