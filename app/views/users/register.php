@@ -66,7 +66,7 @@
                     </div>     
                 </div>
                 <div class="col-md-8">
-                    <a href="<?php echo URLROOT; ?>/user/login" class="btn btn-link btn-block">
+                    <a href="<?php echo URLROOT; ?>/login" class="btn btn-link btn-block">
                         <span class="float-right">Have an account? Login</span>
                     </a>    
                 </div>   

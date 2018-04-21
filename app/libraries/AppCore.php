@@ -17,7 +17,19 @@ class AppCore
     public function __construct()
     {      
         $url = $this->getUrl();
-
+        
+        switch ($url[0]) 
+        {
+            case 'login':
+                $url = ['user', 'login'];
+                break;
+            case 'register':
+                $url = ['user', 'register'];
+                break;
+            default:
+                $url = $url;
+        }
+        
         // Look in controllers for first value
         if (file_exists('../src/Controller/'.ucfirst($url[0]).'Controller.php')) {
             $this->currentController = ucfirst($url[0]).'Controller';

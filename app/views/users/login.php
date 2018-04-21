@@ -10,12 +10,11 @@
                     name="email" 
                     id="email" 
                     type="text"    
-                    class="form-control <?php echo (!empty($data['email_error'])) ? 'is-invalid' : ''; ?>"
-                    value="<?php echo $data['email']; ?>" 
+                    class="form-control <?php echo (!empty($data['errors']['email_error'])) ? 'is-invalid' : ''; ?>"
                     placeholder="Email"
                 > 
                 <span class="invalid-feedback">
-                    <?php echo $data['email_error']; ?>
+                    <?php echo $data['errors']['email_error']; ?>
                 </span>   
             </div>
             <div class="form-group">
@@ -23,12 +22,11 @@
                     name="password" 
                     id="password" 
                     type="password" 
-                    class="form-control <?php echo (!empty($data['password_error'])) ? 'is-invalid' : ''; ?>" 
-                    value="<?php echo $data['password']; ?>" 
+                    class="form-control <?php echo (!empty($data['errors']['password_error'])) ? 'is-invalid' : ''; ?>" 
                     placeholder="Password"
                 > 
                 <span class="invalid-feedback">
-                    <?php echo $data['password_error']; ?>
+                    <?php echo $data['errors']['password_error']; ?>
                 </span>   
             </div>
             <div class="row">
@@ -44,7 +42,7 @@
                     </div>     
                 </div>
                 <div class="col-md-8">
-                    <a href="<?php echo URLROOT; ?>/user/register" class="btn btn-link btn-block">
+                    <a href="<?php echo URLROOT; ?>/register" class="btn btn-link btn-block">
                         <span class="float-right">Don't have an account? Register</span>
                     </a>    
                 </div>   

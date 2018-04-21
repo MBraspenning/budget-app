@@ -4,6 +4,11 @@ class AjaxController extends Controller
 {
     public function __construct()
     {
+        // Redirect if not logged in
+        if (!isset($_SESSION['user_id'])) {
+            redirect('login');    
+        }
+        
         $this->incomeModel = $this->model('Income');
         $this->expenseModel = $this->model('Expense');
         $this->budgetModel = $this->model('Budget');

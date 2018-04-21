@@ -9,26 +9,30 @@ class UserController extends Controller
     
     public function registerAction()
     {
+        if (isLoggedIn()) {
+            redirect('');
+        }
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
-            $user_input = [
+            $user_register_input = [
                 'username' => trim($_POST['username']),
                 'email' => trim($_POST['email']),
                 'password' => trim($_POST['password']),
                 'confirm_password' => trim($_POST['confirm_password'])
             ];
             
-            $validationErrors = $this->userModel->validateInput($user_input);
+            $validationErrors = $this->userModel->validateInput($user_register_input);
             
             if (empty($validationErrors)) {
-                $this->userModel->registerUser($user_input);
-                redirect('user/login');
+                $this->userModel->registerUser($user_register_input);
+                redirect('login');
             } else {
                 $this->view('users/register', array(
                     'errors' => $validationErrors
                 ));
             }
-                        
+   
         } else {                        
             $this->view('users/register', array(
                 'errors' => [],
@@ -38,17 +42,48 @@ class UserController extends Controller
     
     public function loginAction()
     {
+        if (isLoggedIn()) {
+            redirect('');
+        }
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
-        } else {
-            $data = [
-                'email' => '',
-                'password' => '',
-                'email_error' => '',
-                'password_error' => '',                
+            $user_login_input = [
+                'email' => trim($_POST['email']),
+                'password' => trim($_POST['password'])
             ];
+                        
+            $user = $this->userModel->loginUser($user_login_input);
             
-            $this->view('users/login', $data);
+            if ($user) {
+                $this->setUserSession($user);
+                redirect('');    
+            } else {
+                $this->view('users/login', array(
+                    'errors' => [],
+                ));    
+            }            
+            
+        } else {            
+            $this->view('users/login', array(
+                'errors' => [],
+            ));
         }
+    }
+    
+    public function logoutAction()
+    {
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_username']);
+        unset($_SESSION['user_email']);
+        session_destroy();
+        redirect('login');
+    }
+    
+    public function setUserSession($user)
+    {
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_username'] = $user->username;
+        $_SESSION['user_email'] = $user->email;
     }
 }
