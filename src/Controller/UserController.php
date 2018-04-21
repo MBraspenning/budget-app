@@ -29,6 +29,7 @@ class UserController extends Controller
                 redirect('login');
             } else {
                 $this->view('users/register', array(
+                    'user_register_input' => $user_register_input,
                     'errors' => $validationErrors
                 ));
             }

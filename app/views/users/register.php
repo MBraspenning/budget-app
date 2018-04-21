@@ -12,6 +12,9 @@
                     type="text" 
                     class="form-control <?php echo (!empty($data['errors']['username_error'])) ? 'is-invalid' : ''; ?>"                     
                     placeholder="Username"
+                    <?php if (!empty($data['user_register_input']['username'])) : ?>
+                    value="<?php echo $data['user_register_input']['username'] ?>"
+                    <?php endif; ?>
                 >   
                 <span class="invalid-feedback">
                     <?php echo $data['errors']['username_error']; ?>
@@ -22,11 +25,14 @@
                     name="email" 
                     id="email" 
                     type="text"    
-                    class="form-control <?php echo (!empty($data['email_error'])) ? 'is-invalid' : ''; ?>"                    
+                    class="form-control <?php echo (!empty($data['errors']['email_error'])) ? 'is-invalid' : ''; ?>"                    
                     placeholder="Email"
+                    <?php if (!empty($data['user_register_input']['email'])) : ?>
+                    value="<?php echo $data['user_register_input']['email'] ?>"
+                    <?php endif; ?>
                 > 
                 <span class="invalid-feedback">
-                    <?php echo $data['email_error']; ?>
+                    <?php echo $data['errors']['email_error']; ?>
                 </span>   
             </div>
             <div class="form-group">
@@ -34,11 +40,11 @@
                     name="password" 
                     id="password" 
                     type="password" 
-                    class="form-control <?php echo (!empty($data['password_error'])) ? 'is-invalid' : ''; ?>" 
+                    class="form-control <?php echo (!empty($data['errors']['password_error'])) ? 'is-invalid' : ''; ?>" 
                     placeholder="Password"
                 > 
                 <span class="invalid-feedback">
-                    <?php echo $data['password_error']; ?>
+                    <?php echo $data['errors']['password_error']; ?>
                 </span>   
             </div>
             <div class="form-group">
@@ -46,11 +52,11 @@
                     name="confirm_password" 
                     id="confirm_password" 
                     type="password" 
-                    class="form-control <?php echo (!empty($data['confirm_password_error'])) ? 'is-invalid' : ''; ?>" 
+                    class="form-control <?php echo (!empty($data['errors']['confirm_password_error'])) ? 'is-invalid' : ''; ?>" 
                     placeholder="Confirm Password"
                 > 
                 <span class="invalid-feedback">
-                    <?php echo $data['confirm_password_error']; ?>
+                    <?php echo $data['errors']['confirm_password_error']; ?>
                 </span>   
             </div> 
             <div class="row">
