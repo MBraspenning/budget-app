@@ -12,6 +12,9 @@
                     type="text"    
                     class="form-control <?php echo (!empty($data['errors']['email_error'])) ? 'is-invalid' : ''; ?>"
                     placeholder="Email"
+                    <?php if (!empty($data['user_login_input']['email'])) : ?>
+                    value="<?php echo $data['user_login_input']['email'] ?>"
+                    <?php endif; ?>
                 > 
                 <span class="invalid-feedback">
                     <?php echo $data['errors']['email_error']; ?>

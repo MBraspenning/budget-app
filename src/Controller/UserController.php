@@ -53,17 +53,26 @@ class UserController extends Controller
                 'email' => trim($_POST['email']),
                 'password' => trim($_POST['password'])
             ];
-                        
-            $user = $this->userModel->loginUser($user_login_input);
             
-            if ($user) {
-                $this->setUserSession($user);
-                redirect('');    
+            $validationErrors = $this->userModel->validateLogin($user_login_input);
+            
+            if (empty($validationErrors)) {
+                $user = $this->userModel->loginUser($user_login_input);
+                if ($user) {
+                    $this->setUserSession($user);
+                    redirect('');    
+                } else {
+                    $this->view('users/login', array(
+                        'user_login_input' => $user_login_input,
+                        'errors' => $validationErrors,
+                    ));    
+                }   
             } else {
                 $this->view('users/login', array(
-                    'errors' => [],
+                    'user_login_input' => $user_login_input,
+                    'errors' => $validationErrors,
                 ));    
-            }            
+            }  
             
         } else {            
             $this->view('users/login', array(

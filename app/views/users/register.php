@@ -4,7 +4,7 @@
 <div class="container">
     <div class="col-md-6 col-centered mt-5">
         <h4 class="mb-3">Register Account</h4>
-        <form action="<?php echo URLROOT; ?>/user/register" method="POST">
+        <form action="<?php echo URLROOT; ?>/user/register" method="POST" id="registration-form" onsubmit="return validateRegisterInput()">
             <div class="form-group">
                 <input 
                     name="username" 
@@ -18,7 +18,8 @@
                 >   
                 <span class="invalid-feedback">
                     <?php echo $data['errors']['username_error']; ?>
-                </span> 
+                </span>
+                <span id="username-error-span" class="invalid-feedback"></span> 
             </div>
             <div class="form-group">
                 <input 
@@ -31,9 +32,10 @@
                     value="<?php echo $data['user_register_input']['email'] ?>"
                     <?php endif; ?>
                 > 
-                <span class="invalid-feedback">
+                <span class="invalid-feedback" id="email-error-span">
                     <?php echo $data['errors']['email_error']; ?>
                 </span>   
+                <span id="email-error-span" class="invalid-feedback"></span>
             </div>
             <div class="form-group">
                 <input 
@@ -43,9 +45,10 @@
                     class="form-control <?php echo (!empty($data['errors']['password_error'])) ? 'is-invalid' : ''; ?>" 
                     placeholder="Password"
                 > 
-                <span class="invalid-feedback">
+                <span class="invalid-feedback" id="password-error-span">
                     <?php echo $data['errors']['password_error']; ?>
                 </span>   
+                <span id="password-error-span" class="invalid-feedback"></span>
             </div>
             <div class="form-group">
                 <input 
@@ -55,9 +58,10 @@
                     class="form-control <?php echo (!empty($data['errors']['confirm_password_error'])) ? 'is-invalid' : ''; ?>" 
                     placeholder="Confirm Password"
                 > 
-                <span class="invalid-feedback">
+                <span class="invalid-feedback" id="confirm-password-error-span">
                     <?php echo $data['errors']['confirm_password_error']; ?>
-                </span>   
+                </span> 
+                <span id="confirm-password-error-span" class="invalid-feedback"></span>  
             </div> 
             <div class="row">
                 <div class="col-md-4">
@@ -81,4 +85,5 @@
     </div>
 </div>
 
+<script src="<?php echo URLROOT ?>/js/register-validation.js" type="text/javascript"></script>
 <?php include APPROOT . '/views/partials/footer.php'; ?>
