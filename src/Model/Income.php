@@ -11,8 +11,8 @@ class Income
     
     public function getAllIncome()
     {
-        $this->db->query("SELECT * FROM income");
-        
+        $this->db->query("SELECT * FROM income WHERE user_id = :user_id");
+        $this->db->bind(':user_id', $_SESSION['user_id']);
         $results = $this->db->resultSet();
         
         return $results;
@@ -20,10 +20,11 @@ class Income
     
     public function getAllIncomeForMonth(int $M, int $Y)
     {
-        $this->db->query("SELECT * FROM income WHERE MONTH(added_date) = :month AND YEAR(added_date) = :year");
-        
+        $this->db->query("SELECT * FROM income WHERE MONTH(added_date) = :month AND YEAR(added_date) = :year AND user_id = :user_id");
+                
         $this->db->bind(':month', $M);
         $this->db->bind(':year', $Y);
+        $this->db->bind(':user_id', $_SESSION['user_id']);
         
         $results = $this->db->resultSet();
         
@@ -44,8 +45,9 @@ class Income
     {
         $now = date('Y-m-d');
         
-        $this->db->query("INSERT INTO income (income, amount, added_date) VALUES (:income, :amount, :added_date)");
+        $this->db->query("INSERT INTO income (user_id, income, amount, added_date) VALUES (:user_id, :income, :amount, :added_date)");
         
+        $this->db->bind(':user_id', $_SESSION['user_id']);
         $this->db->bind(':income', $inc_description);
         $this->db->bind(':amount', $amount);
         $this->db->bind(':added_date', $now);

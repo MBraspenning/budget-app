@@ -11,8 +11,8 @@ class Expense
     
     public function getAllExpense()
     {
-        $this->db->query("SELECT * FROM expense");
-        
+        $this->db->query("SELECT * FROM expense WHERE user_id = :user_id");
+        $this->db->bind(':user_id', $_SESSION['user_id']);
         $results = $this->db->resultSet();
         
         return $results;
@@ -20,10 +20,11 @@ class Expense
     
     public function getAllExpenseForMonth(int $M, int $Y)
     {
-        $this->db->query("SELECT * FROM expense WHERE MONTH(added_date) = :month AND YEAR(added_date) = :year");
+        $this->db->query("SELECT * FROM expense WHERE MONTH(added_date) = :month AND YEAR(added_date) = :year AND user_id = :user_id");
         
         $this->db->bind(':month', $M);
         $this->db->bind(':year', $Y);
+        $this->db->bind(':user_id', $_SESSION['user_id']);
         
         $results = $this->db->resultSet();
         
@@ -44,8 +45,9 @@ class Expense
     {
         $now = date('Y-m-d');
         
-        $this->db->query("INSERT INTO expense (expense, amount, added_date) VALUES (:expense, :amount, :added_date)");
+        $this->db->query("INSERT INTO expense (user_id, expense, amount, added_date) VALUES (:user_id, :expense, :amount, :added_date)");
         
+        $this->db->bind(':user_id', $_SESSION['user_id']);
         $this->db->bind(':expense', $exp_description);
         $this->db->bind(':amount', $amount);
         $this->db->bind(':added_date', $now);

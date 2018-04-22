@@ -11,7 +11,9 @@ class Budget
     
     public function getAllBudget()
     {
-        $this->db->query("SELECT * FROM budget");
+        $this->db->query("SELECT * FROM budget WHERE user_id = :user_id");
+        
+        $this->db->bind(':user_id', $_SESSION['user_id']);
         
         $results = $this->db->resultSet();
         
@@ -20,10 +22,11 @@ class Budget
     
     public function getAllBudgetForMonth(int $M, int $Y)
     {
-        $this->db->query("SELECT * FROM budget WHERE month = :month AND year = :year ORDER BY id DESC LIMIT 1");
+        $this->db->query("SELECT * FROM budget WHERE month = :month AND year = :year And user_id = :user_id ORDER BY id DESC LIMIT 1");
         
         $this->db->bind(':month', $M);
         $this->db->bind(':year', $Y);
+        $this->db->bind(':user_id', $_SESSION['user_id']);
         
         $results = $this->db->resultSet();
         
@@ -32,7 +35,8 @@ class Budget
     
     public function getBudgetMonth()
     {
-        $this->db->query("SELECT month FROM budget ORDER BY id DESC LIMIT 1");
+        $this->db->query("SELECT month FROM budget WHERE user_id = :user_id ORDER BY id DESC LIMIT 1");
+        $this->db->bind(':user_id', $_SESSION['user_id']);
         $budgetMonth = $this->db->single();
         
         return $budgetMonth;
@@ -40,8 +44,13 @@ class Budget
     
     public function newBudget(int $M, int $Y, $amount, $type)
     {
-        $this->db->query("INSERT INTO budget (month, year, total_" . $type . ", total_budget) VALUES (:month, :year, :total_inc_exp, :total_budget)");    
+        $this->db->query(
+            "INSERT INTO budget 
+            (user_id, month, year, total_" . $type . ", total_budget) 
+            VALUES (:user_id, :month, :year, :total_inc_exp, :total_budget)"
+        );    
 
+        $this->db->bind(':user_id', $_SESSION['user_id']);
         $this->db->bind(':month', $M);
         $this->db->bind(':year', $Y);
         $this->db->bind(':total_inc_exp', $amount);
@@ -63,25 +72,53 @@ class Budget
     {
         if ($type === 'income') {
             if ($action === 'insert' || $action === 'edit') {
-                $this->db->query("UPDATE budget SET total_income = total_income + :amount, total_budget = total_income - total_expense ORDER BY id DESC LIMIT 1"); 
+                $this->db->query(
+                    "UPDATE budget 
+                    SET total_income = total_income + :amount, 
+                    total_budget = total_income - total_expense 
+                    WHERE user_id = :user_id 
+                    ORDER BY id DESC LIMIT 1"
+                ); 
                 $this->db->bind(':amount', $amount);
+                $this->db->bind(':user_id', $_SESSION['user_id']);
                 $this->db->executeStmt();    
             }
             if ($action === 'delete') {
-                $this->db->query('UPDATE budget SET total_income = total_income - :amount, total_budget = total_income - total_expense ORDER BY id DESC LIMIT 1');
+                $this->db->query(
+                    'UPDATE budget 
+                    SET total_income = total_income - :amount,
+                    total_budget = total_income - total_expense
+                    WHERE user_id = :user_id
+                    ORDER BY id DESC LIMIT 1'
+                );
                 $this->db->bind(':amount', $amount);
+                $this->db->bind(':user_id', $_SESSION['user_id']);
                 $this->db->executeStmt();
             }
         }
         if ($type === 'expense') {
             if ($action === 'insert' || $action === 'edit') {
-                $this->db->query("UPDATE budget SET total_expense = total_expense + :amount, total_budget = total_income - total_expense ORDER BY id DESC LIMIT 1");
+                $this->db->query(
+                    "UPDATE budget 
+                    SET total_expense = total_expense + :amount,
+                    total_budget = total_income - total_expense
+                    WHERE user_id = :user_id
+                    ORDER BY id DESC LIMIT 1"
+                );
                 $this->db->bind(':amount', $amount);
+                $this->db->bind(':user_id', $_SESSION['user_id']);
                 $this->db->executeStmt();    
             }  
             if ($action === 'delete') {
-                $this->db->query('UPDATE budget SET total_expense = total_expense - :amount, total_budget = total_income - total_expense ORDER BY id DESC LIMIT 1');
+                $this->db->query(
+                    'UPDATE budget SET 
+                    total_expense = total_expense - :amount, 
+                    total_budget = total_income - total_expense
+                    WHERE user_id = :user_id
+                    ORDER BY id DESC LIMIT 1'
+                );
                 $this->db->bind(':amount', $amount);
+                $this->db->bind(':user_id', $_SESSION['user_id']);
                 $this->db->executeStmt();
             }
         } 
