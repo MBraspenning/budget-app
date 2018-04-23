@@ -26,6 +26,7 @@ class UserController extends Controller
             
             if (empty($validationErrors)) {
                 $this->userModel->registerUser($user_register_input);
+                flash('register_success', 'You are registered and can now log in.');
                 redirect('login');
             } else {
                 $this->view('users/register', array(

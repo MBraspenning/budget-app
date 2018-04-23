@@ -3,6 +3,7 @@
 
 <div class="container">
     <div class="col-md-6 col-centered mt-5">
+        <?php flash('register_success'); ?>
         <h4 class="mb-3">Login</h4>
         <form action="<?php echo URLROOT; ?>/user/login" method="POST">
             <div class="form-group">

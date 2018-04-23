@@ -27,6 +27,34 @@ class User
             $errors['confirm_password_error'] = 'Please confirm your password.';
         }
         
+        // VALIDATE FIELDS ARE APPROPRIATE LENGTH / FORMAT
+        if 
+        (
+            !empty($data['username']) &&
+            (
+                strlen($data['username']) < 2 || 
+                strlen($data['username']) > 15 || 
+                !ctype_alnum($data['username'])
+            )
+        ) 
+        {
+            $errors['username_error'] = 
+                'Username must be between 2 and 15 characters long and can only contain alphanumeric (a-z, A-Z, 0-9) characters.';
+        }
+        
+        if
+        (
+            !empty($data['password']) &&
+            (
+                strlen($data['password']) < 6 ||
+                preg_match("/^.*(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/", $data['password']) === 0
+            )
+        )
+        {
+            $errors['password_error'] =
+                'Password must be at least 6 characters long and contain at least a lowercase and an uppercase character and one digit.';
+        }
+        
         // VALIDATE EMAIL FORMAT
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $errors['email_error'] = 'Please enter a valid email.';
