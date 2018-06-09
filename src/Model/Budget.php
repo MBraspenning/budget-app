@@ -20,13 +20,13 @@ class Budget
         return $results;
     }
     
-    public function getAllBudgetForMonth(int $M, int $Y)
+    public function getAllBudgetForMonth(int $M, int $Y, string $user_id)
     {
         $this->db->query("SELECT * FROM budget WHERE month = :month AND year = :year And user_id = :user_id ORDER BY id DESC LIMIT 1");
         
         $this->db->bind(':month', $M);
         $this->db->bind(':year', $Y);
-        $this->db->bind(':user_id', $_SESSION['user_id']);
+        $this->db->bind(':user_id', $user_id);
         
         $results = $this->db->resultSet();
         

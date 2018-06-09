@@ -18,13 +18,13 @@ class Expense
         return $results;
     }
     
-    public function getAllExpenseForMonth(int $M, int $Y)
+    public function getAllExpenseForMonth(int $M, int $Y, string $user_id)
     {
         $this->db->query("SELECT * FROM expense WHERE MONTH(added_date) = :month AND YEAR(added_date) = :year AND user_id = :user_id");
         
         $this->db->bind(':month', $M);
         $this->db->bind(':year', $Y);
-        $this->db->bind(':user_id', $_SESSION['user_id']);
+        $this->db->bind(':user_id', $user_id);
         
         $results = $this->db->resultSet();
         

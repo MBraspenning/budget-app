@@ -18,17 +18,23 @@ class AjaxController extends Controller
     {
         $month;
         $year;
-        if (isset($_GET['month']) && isset($_GET['year'])) {
+        
+        if (isset($_GET['month']) && isset($_GET['year'])) 
+        {
             $month = $_GET['month'];
             $year = $_GET['year'];
-        } else {
+        } 
+        else 
+        {
             $month = intval(date('n'));
             $year = intval(date('Y'));
         }
         
-        $allBudgetForCurrentMonth = $this->budgetModel->getAllBudgetForMonth($month, $year);
-        $allIncomeForCurrentMonth = $this->incomeModel->getAllIncomeForMonth($month, $year);
-        $allExpenseForCurrentMonth = $this->expenseModel->getAllExpenseForMonth($month, $year);
+        $user_id = $_SESSION['user_id'];
+        
+        $allBudgetForCurrentMonth = $this->budgetModel->getAllBudgetForMonth($month, $year, $user_id);
+        $allIncomeForCurrentMonth = $this->incomeModel->getAllIncomeForMonth($month, $year, $user_id);
+        $allExpenseForCurrentMonth = $this->expenseModel->getAllExpenseForMonth($month, $year, $user_id);
         
         $budgetJSON = json_encode($allBudgetForCurrentMonth);
         $incomeJSON = json_encode($allIncomeForCurrentMonth);
