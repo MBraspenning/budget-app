@@ -49,28 +49,28 @@ class AjaxController extends Controller
     {   
         $currentMonth = intval(date('n'));
         $currentYear = intval(date('Y'));
-        $budgetMonth = $this->budgetModel->getBudgetMonth();
+        $budgetMonth = $this->budgetModel->getBudgetMonth($_SESSION['user_id']);
         
         if (isset($_POST['submit'])) {
             if ($_POST['select-type'] === 'select-income') {
                 
-                $this->incomeModel->insertIncome($_POST['description'], $_POST['amount']);
+                $this->incomeModel->insertIncome($_POST['description'], $_POST['amount'], $_SESSION['user_id']);
                 
                 if (intval($budgetMonth->month) === $currentMonth) {
-                    $this->budgetModel->updateBudget($_POST['amount'], 'income', 'insert');
+                    $this->budgetModel->updateBudget($_POST['amount'], 'income', 'insert', $_SESSION['user_id']);
                 } else {
-                    $this->budgetModel->newBudget($currentMonth, $currentYear, $_POST['amount'], 'income');
+                    $this->budgetModel->newBudget($currentMonth, $currentYear, $_POST['amount'], 'income', $_SESSION['user_id']);
                 }        
             }
             
             if ($_POST['select-type'] === 'select-expense') {
                 
-                $this->expenseModel->insertExpense($_POST['description'], $_POST['amount']);
+                $this->expenseModel->insertExpense($_POST['description'], $_POST['amount'], $_SESSION['user_id']);
                 
                 if (intval($budgetMonth->month) === $currentMonth) {
-                    $this->budgetModel->updateBudget($_POST['amount'], 'expense', 'insert');
+                    $this->budgetModel->updateBudget($_POST['amount'], 'expense', 'insert', $_SESSION['user_id']);
                 } else {
-                    $this->budgetModel->newBudget($currentMonth, $currentYear, $_POST['amount'], 'expense');
+                    $this->budgetModel->newBudget($currentMonth, $currentYear, $_POST['amount'], 'expense', $_SESSION['user_id']);
                 } 
             }
         }
@@ -85,7 +85,7 @@ class AjaxController extends Controller
                 
                 $this->incomeModel->editIncome($_GET['description'], $_GET['amount'], $_GET['id']);
                                 
-                $this->budgetModel->updateBudget($updateTotalIncomeAmount, 'income', 'edit');
+                $this->budgetModel->updateBudget($updateTotalIncomeAmount, 'income', 'edit', $_SESSION['user_id']);
             }
             
             if ($_GET['type'] === 'expense') {
@@ -94,7 +94,7 @@ class AjaxController extends Controller
                 
                 $this->expenseModel->editExpense($_GET['description'], $_GET['amount'], $_GET['id']);
                             
-                $this->budgetModel->updateBudget($updateTotalExpenseAmount, 'expense', 'edit');
+                $this->budgetModel->updateBudget($updateTotalExpenseAmount, 'expense', 'edit', $_SESSION['user_id']);
             }
         }
     }
@@ -104,11 +104,11 @@ class AjaxController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
             if ($_GET['type'] === 'income') {
                 $this->incomeModel->deleteIncome($_GET['id']);
-                $this->budgetModel->updateBudget($_GET['amount'], $_GET['type'], 'delete');
+                $this->budgetModel->updateBudget($_GET['amount'], $_GET['type'], 'delete', $_SESSION['user_id']);
             }
             if ($_GET['type'] === 'expense') {
                 $this->expenseModel->deleteExpense($_GET['id']);
-                $this->budgetModel->updateBudget($_GET['amount'], $_GET['type'], 'delete');
+                $this->budgetModel->updateBudget($_GET['amount'], $_GET['type'], 'delete', $_SESSION['user_id']);
             }
         }
     }

@@ -33,16 +33,16 @@ class Budget
         return $results;
     }
     
-    public function getBudgetMonth()
+    public function getBudgetMonth(string $user_id)
     {
         $this->db->query("SELECT month FROM budget WHERE user_id = :user_id ORDER BY id DESC LIMIT 1");
-        $this->db->bind(':user_id', $_SESSION['user_id']);
+        $this->db->bind(':user_id', $user_id);
         $budgetMonth = $this->db->single();
         
         return $budgetMonth;
     }
     
-    public function newBudget(int $M, int $Y, $amount, $type)
+    public function newBudget(int $M, int $Y, $amount, $type, string $user_id)
     {
         $this->db->query(
             "INSERT INTO budget 
@@ -50,7 +50,7 @@ class Budget
             VALUES (:user_id, :month, :year, :total_inc_exp, :total_budget)"
         );    
 
-        $this->db->bind(':user_id', $_SESSION['user_id']);
+        $this->db->bind(':user_id', $user_id);
         $this->db->bind(':month', $M);
         $this->db->bind(':year', $Y);
         $this->db->bind(':total_inc_exp', $amount);
@@ -68,7 +68,7 @@ class Budget
         $this->db->executeStmt();
     }
     
-    public function updateBudget(int $amount, string $type, string $action)
+    public function updateBudget(int $amount, string $type, string $action, string $user_id)
     {
         if ($type === 'income') {
             if ($action === 'insert' || $action === 'edit') {
@@ -80,7 +80,7 @@ class Budget
                     ORDER BY id DESC LIMIT 1"
                 ); 
                 $this->db->bind(':amount', $amount);
-                $this->db->bind(':user_id', $_SESSION['user_id']);
+                $this->db->bind(':user_id', $user_id);
                 $this->db->executeStmt();    
             }
             if ($action === 'delete') {
@@ -92,7 +92,7 @@ class Budget
                     ORDER BY id DESC LIMIT 1'
                 );
                 $this->db->bind(':amount', $amount);
-                $this->db->bind(':user_id', $_SESSION['user_id']);
+                $this->db->bind(':user_id', $user_id);
                 $this->db->executeStmt();
             }
         }
@@ -106,7 +106,7 @@ class Budget
                     ORDER BY id DESC LIMIT 1"
                 );
                 $this->db->bind(':amount', $amount);
-                $this->db->bind(':user_id', $_SESSION['user_id']);
+                $this->db->bind(':user_id', $user_id);
                 $this->db->executeStmt();    
             }  
             if ($action === 'delete') {
@@ -118,7 +118,7 @@ class Budget
                     ORDER BY id DESC LIMIT 1'
                 );
                 $this->db->bind(':amount', $amount);
-                $this->db->bind(':user_id', $_SESSION['user_id']);
+                $this->db->bind(':user_id', $user_id);
                 $this->db->executeStmt();
             }
         } 
