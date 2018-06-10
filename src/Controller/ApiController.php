@@ -61,4 +61,29 @@ class ApiController extends Controller
             } 
         }        
     }
+    
+    public function editAction()
+    {
+        $request = file_get_contents('php://input'),
+        
+        $data = json_decode($request);
+        
+        if ($data->type === 'income') {
+            $currentAmount = $this->incomeModel->getAmountForOneResult($data->id);
+            $updateTotalIncomeAmount = intval($data->amount) - intval($currentAmount->amount);
+
+            $this->incomeModel->editIncome($data->description, $data->amount, $data->id);
+
+            $this->budgetModel->updateBudget($updateTotalIncomeAmount, 'income', 'edit', $data->user_id);
+        }
+
+        if ($data->type === 'expense') {
+            $currentAmount = $this->expenseModel->getAmountForOneResult($data->id);
+            $updateTotalExpenseAmount = intval($data->amount) - intval($currentAmount->amount);
+
+            $this->expenseModel->editExpense($data->description, $data->amount, $data->id);
+
+            $this->budgetModel->updateBudget($updateTotalExpenseAmount, 'expense', 'edit', $data->user_id);
+        }
+    }
 }
