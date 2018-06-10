@@ -86,4 +86,20 @@ class ApiController extends Controller
             $this->budgetModel->updateBudget($updateTotalExpenseAmount, 'expense', 'edit', $data->user_id);
         }
     }
+    
+    public function deleteAction()
+    {
+        $request = file_get_contents('php://input');
+        
+        $data = json_decode($request);
+        
+        if ($data->type === 'income') {
+            $this->incomeModel->deleteIncome($data->id);
+            $this->budgetModel->updateBudget($data->amount, $data->type, 'delete', $data->user_id);
+        }
+        if ($data->type === 'expense') {
+            $this->expenseModel->deleteExpense($data->id);
+            $this->budgetModel->updateBudget($data->amount, $data->type, 'delete', $data->user_id);
+        }
+    }
 }
