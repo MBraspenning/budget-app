@@ -64,7 +64,7 @@ class ApiController extends Controller
     
     public function editAction()
     {
-        $request = file_get_contents('php://input'),
+        $request = file_get_contents('php://input');
         
         $data = json_decode($request);
         
