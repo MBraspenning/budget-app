@@ -4,9 +4,51 @@ class ApiController extends Controller
 {
     public function __construct()
     {
+        $this->userModel = $this->model('User');
         $this->incomeModel = $this->model('Income');
         $this->expenseModel = $this->model('Expense');
         $this->budgetModel = $this->model('Budget');
+    }
+    
+    public function loginAction()
+    {        
+        $request = file_get_contents('php://input');
+        
+        $data = json_decode($request);        
+            
+        $user_login_input = [
+            'email' => trim($data->email),
+            'password' => trim($data->password)
+        ];
+
+        $validationErrors = $this->userModel->validateLogin($user_login_input);
+
+        if (empty($validationErrors))
+        {
+            echo json_encode(['test' => 'jeej, no errors!']);
+        }
+        else 
+        {
+            echo json_encode(['test' => 'boooh, errors!']);
+        }
+        
+//        if (empty($validationErrors)) {
+//            $user = $this->userModel->loginUser($user_login_input);
+//            if ($user) {
+//                $this->setUserSession($user);
+//                redirect('');    
+//            } else {
+//                $this->view('users/login', array(
+//                    'user_login_input' => $user_login_input,
+//                    'errors' => $validationErrors,
+//                ));    
+//            }   
+//        } else {
+//            $this->view('users/login', array(
+//                'user_login_input' => $user_login_input,
+//                'errors' => $validationErrors,
+//            ));    
+//        }              
     }
     
     public function fetchAction()
