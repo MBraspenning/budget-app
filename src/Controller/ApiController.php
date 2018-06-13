@@ -14,11 +14,11 @@ class ApiController extends Controller
     
     public function loginAction()
     {    
-        $key = 'test-key';
-                
+        $key = JWT_KEY;
+
         $issuedAt = time();
         $issuer = URLROOT;
-        $notBefore = $issuedAt + 10;
+        $notBefore = $issuedAt;
         $expires = $notBefore + (60 * 5);
 
         $token = array(
@@ -31,9 +31,9 @@ class ApiController extends Controller
             ]
         );
 
-        $jwt = JWT::encode($token, $key);
+        $jwt = JWT::encode($token, $key, 'HS512');
 
-        echo $jwt;
+        echo json_encode($jwt);    
         
 //        $request = file_get_contents('php://input');
 //        
