@@ -1,5 +1,7 @@
 <?php
 
+use \Firebase\JWT\JWT;
+
 class ApiController extends Controller
 {
     public function __construct()
@@ -11,44 +13,77 @@ class ApiController extends Controller
     }
     
     public function loginAction()
-    {        
-        $request = file_get_contents('php://input');
-        
-        $data = json_decode($request);        
-            
-        $user_login_input = [
-            'email' => trim($data->email),
-            'password' => trim($data->password)
-        ];
+    {    
+        $key = 'test-key';
+                
+        $issuedAt = time();
+        $issuer = URLROOT;
+        $notBefore = $issuedAt + 10;
+        $expires = $notBefore + (60 * 5);
 
-        $validationErrors = $this->userModel->validateLogin($user_login_input);
+        $token = array(
+            'iat' => $issuedAt,
+            'iss' => $issuer,
+            'nbf' => $notBefore,
+            'exp' => $expires,
+            'data' => [
+                'userId' => 'test'
+            ]
+        );
 
-        if (empty($validationErrors))
-        {
-            echo json_encode(['test' => 'jeej, no errors!']);
-        }
-        else 
-        {
-            echo json_encode(['test' => 'boooh, errors!']);
-        }
+        $jwt = JWT::encode($token, $key);
+
+        echo $jwt;
         
-//        if (empty($validationErrors)) {
+//        $request = file_get_contents('php://input');
+//        
+//        $data = json_decode($request);        
+//            
+//        $user_login_input = [
+//            'email' => trim($data->email),
+//            'password' => trim($data->password)
+//        ];
+//
+//        $validationErrors = $this->userModel->validateLogin($user_login_input);
+//
+//        if (empty($validationErrors))
+//        {
 //            $user = $this->userModel->loginUser($user_login_input);
-//            if ($user) {
-//                $this->setUserSession($user);
-//                redirect('');    
-//            } else {
-//                $this->view('users/login', array(
-//                    'user_login_input' => $user_login_input,
-//                    'errors' => $validationErrors,
-//                ));    
+//            
+//            if ($user) 
+//            {
+//                //echo json_encode(['test' => 'jeej, no errors!', 'id' => $user->id]);
+//                
+//                $key = 'test-key';
+//                
+//                $issuedAt = time();
+//                $issuer = URLROOT,
+//                $notBefore = $issuedAt + 10,
+//                $expires = $notBefore + (60 * 5);
+//
+//                $token = array(
+//                    'iat' => $issuedAt,
+//                    'iss' => $issuer,
+//                    'nbf' => $notBefore,
+//                    'exp' => $expires,
+//                    'data' => [
+//                        'userId' => $user->id
+//                    ]
+//                );
+//                
+//                $jwt = JWT::encode($token, $key);
+//                
+//                echo $jwt;
+//            } 
+//            else 
+//            {
+//                echo json_encode(['test' => 'could not login']);
 //            }   
-//        } else {
-//            $this->view('users/login', array(
-//                'user_login_input' => $user_login_input,
-//                'errors' => $validationErrors,
-//            ));    
-//        }              
+//        }
+//        else 
+//        {
+//            echo json_encode(['test' => 'boooh, errors!']);
+//        }                     
     }
     
     public function fetchAction()
