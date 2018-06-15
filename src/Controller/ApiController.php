@@ -13,77 +13,54 @@ class ApiController extends Controller
     }
     
     public function loginAction()
-    {    
-        $key = JWT_KEY;
-
-        $issuedAt = time();
-        $issuer = URLROOT;
-        $notBefore = $issuedAt;
-        $expires = $notBefore + (60 * 5);
-
-        $token = array(
-            'iat' => $issuedAt,
-            'iss' => $issuer,
-            'nbf' => $notBefore,
-            'exp' => $expires,
-            'data' => [
-                'userId' => 'test'
-            ]
-        );
-
-        $jwt = JWT::encode($token, $key, 'HS512');
-
-        echo json_encode($jwt);    
+    {               
+        $request = file_get_contents('php://input');
         
-//        $request = file_get_contents('php://input');
-//        
-//        $data = json_decode($request);        
-//            
-//        $user_login_input = [
-//            'email' => trim($data->email),
-//            'password' => trim($data->password)
-//        ];
-//
-//        $validationErrors = $this->userModel->validateLogin($user_login_input);
-//
-//        if (empty($validationErrors))
-//        {
-//            $user = $this->userModel->loginUser($user_login_input);
-//            
-//            if ($user) 
-//            {
-//                //echo json_encode(['test' => 'jeej, no errors!', 'id' => $user->id]);
-//                
-//                $key = 'test-key';
-//                
-//                $issuedAt = time();
-//                $issuer = URLROOT,
-//                $notBefore = $issuedAt + 10,
-//                $expires = $notBefore + (60 * 5);
-//
-//                $token = array(
-//                    'iat' => $issuedAt,
-//                    'iss' => $issuer,
-//                    'nbf' => $notBefore,
-//                    'exp' => $expires,
-//                    'data' => [
-//                        'userId' => $user->id
-//                    ]
-//                );
-//                
-//                $jwt = JWT::encode($token, $key);
-//                
-//                echo $jwt;
-//            } 
-//            else 
-//            {
-//                echo json_encode(['test' => 'could not login']);
-//            }   
-//        }
-//        else 
-//        {
-//            echo json_encode(['test' => 'boooh, errors!']);
-//        }                     
+        $data = json_decode($request);        
+            
+        $user_login_input = [
+            'email' => trim($data->email),
+            'password' => trim($data->password)
+        ];
+
+        $validationErrors = $this->userModel->validateLogin($user_login_input);
+
+        if (empty($validationErrors))
+        {
+            $user = $this->userModel->loginUser($user_login_input);
+            
+            if ($user) 
+            {                
+                $key = JWT_KEY;
+
+                $issuedAt = time();
+                $issuer = URLROOT;
+                $notBefore = $issuedAt;
+                $expires = $notBefore + (60 * 5);
+
+                $token = array(
+                    'iat' => $issuedAt,
+                    'iss' => $issuer,
+                    'nbf' => $notBefore,
+                    'exp' => $expires,
+                    'data' => [
+                        'userId' => 'test'
+                    ]
+                );
+                
+                $jwt = JWT::encode($token, $key, 'HS512');
+                
+                echo json_encode(['access_token' => $jwt]);
+            } 
+            else 
+            {
+                echo json_encode(['error' => 'invalid username or password']);
+            }   
+        }
+        else 
+        {
+            echo json_encode(['error' => 'invalid username or password']);
+        }                     
     }
     
     public function fetchAction()
