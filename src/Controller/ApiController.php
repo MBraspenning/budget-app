@@ -12,6 +12,26 @@ class ApiController extends Controller
         $this->budgetModel = $this->model('Budget');
     }
     
+    public function verifyAccessTokenAction()
+    {
+        $headers = apache_request_headers();
+        
+        //$authorization_header = $headers['Authorization'];
+        
+        $authorization_header = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1MjkwNzk0NjIsImlzcyI6Imh0dHA6XC9cL2xvY2FsaG9zdFwvYnVkZ2V0YXBwIiwibmJmIjoxNTI5MDc5NDYyLCJleHAiOjE1MjkwNzk3NjIsImRhdGEiOnsidXNlcklkIjoidGVzdCJ9fQ.7sZJmnyWZaAvyJXanW5rOyOocxaJXeaboPNg7XcsGeTDBMEj4QrhJiAqLAXeFv0F5BuR_SqZsDrmKrL4vezZkA';
+        
+        $jwt = null;
+        
+        if (preg_match('/Bearer\s(\S+)/', $authorization_header, $matches)) 
+        {
+            $jwt = $matches[1];
+        }
+        
+        $decodedJwt = JWT::decode($jwt, JWT_KEY, array('HS512'));
+        
+        print_r($decodedJwt);
+    }
+    
     public function loginAction()
     {               
         $request = file_get_contents('php://input');
@@ -64,7 +84,7 @@ class ApiController extends Controller
     }
     
     public function fetchAction()
-    {
+    {            
         $month = intval(date('n'));
         $year = intval(date('Y'));
         
@@ -155,5 +175,5 @@ class ApiController extends Controller
             $this->expenseModel->deleteExpense($data->id);
             $this->budgetModel->updateBudget($data->amount, $data->type, 'delete', $data->user_id);
         }
-    }
+    }        
 }
