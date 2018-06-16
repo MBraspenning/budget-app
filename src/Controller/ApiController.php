@@ -120,75 +120,105 @@ class ApiController extends Controller
     
     public function insertAction()
     {
-        $request = file_get_contents('php://input');
+        try
+        {
+            $client_data = $this->verifyAccessToken();
+            $user_id = $client_data->userId;
+            
+            $request = file_get_contents('php://input');
         
-        $data = json_decode($request);
-        
-        $currentMonth = intval(date('n'));
-        $currentYear = intval(date('Y'));
-        $budgetMonth = $this->budgetModel->getBudgetMonth($data->user_id);                
-        
-        if ($data->type === 'income') {
+            $data = json_decode($request);
 
-            $this->incomeModel->insertIncome($data->description, $data->amount, $data->user_id);
+            $currentMonth = intval(date('n'));
+            $currentYear = intval(date('Y'));
+            $budgetMonth = $this->budgetModel->getBudgetMonth($user_id);                
 
-            if (intval($budgetMonth->month) === $currentMonth) {
-                $this->budgetModel->updateBudget($data->amount, 'income', 'insert', $data->user_id);
-            } else {
-                $this->budgetModel->newBudget($currentMonth, $currentYear, $data->amount, 'income', $data->user_id);
-            }        
+            if ($data->type === 'income') {
+
+                $this->incomeModel->insertIncome($data->description, $data->amount, $user_id);
+
+                if (intval($budgetMonth->month) === $currentMonth) {
+                    $this->budgetModel->updateBudget($data->amount, 'income', 'insert', $user_id);
+                } else {
+                    $this->budgetModel->newBudget($currentMonth, $currentYear, $data->amount, 'income', $user_id);
+                }        
+            }
+
+            if ($data->type === 'expense') {
+
+                $this->expenseModel->insertExpense($data->description, $data->amount, $user_id);
+
+                if (intval($budgetMonth->month) === $currentMonth) {
+                    $this->budgetModel->updateBudget($data->amount, 'expense', 'insert', $user_id);
+                } else {
+                    $this->budgetModel->newBudget($currentMonth, $currentYear, $data->amount, 'expense', $user_id);
+                } 
+            }    
         }
-
-        if ($data->type === 'expense') {
-
-            $this->expenseModel->insertExpense($data->description, $data->amount, $data->user_id);
-
-            if (intval($budgetMonth->month) === $currentMonth) {
-                $this->budgetModel->updateBudget($data->amount, 'expense', 'insert', $data->user_id);
-            } else {
-                $this->budgetModel->newBudget($currentMonth, $currentYear, $data->amount, 'expense', $data->user_id);
-            } 
-        }        
+        catch (ExpiredException $e)
+        {
+            header('HTTP/1.1 401 Unauthorized');
+        }
     }
     
     public function editAction()
     {
-        $request = file_get_contents('php://input');
+        try
+        {
+            $client_data = $this->verifyAccessToken();
+            $user_id = $client_data->userId;
+            
+            $request = file_get_contents('php://input');
         
-        $data = json_decode($request);
-        
-        if ($data->type === 'income') {
-            $currentAmount = $this->incomeModel->getAmountForOneResult($data->id);
-            $updateTotalIncomeAmount = intval($data->amount) - intval($currentAmount->amount);
+            $data = json_decode($request);
 
-            $this->incomeModel->editIncome($data->description, $data->amount, $data->id);
+            if ($data->type === 'income') {
+                $currentAmount = $this->incomeModel->getAmountForOneResult($data->id);
+                $updateTotalIncomeAmount = intval($data->amount) - intval($currentAmount->amount);
 
-            $this->budgetModel->updateBudget($updateTotalIncomeAmount, 'income', 'edit', $data->user_id);
+                $this->incomeModel->editIncome($data->description, $data->amount, $data->id);
+
+                $this->budgetModel->updateBudget($updateTotalIncomeAmount, 'income', 'edit', $user_id);
+            }
+
+            if ($data->type === 'expense') {
+                $currentAmount = $this->expenseModel->getAmountForOneResult($data->id);
+                $updateTotalExpenseAmount = intval($data->amount) - intval($currentAmount->amount);
+
+                $this->expenseModel->editExpense($data->description, $data->amount, $data->id);
+
+                $this->budgetModel->updateBudget($updateTotalExpenseAmount, 'expense', 'edit', $user_id);
+            }    
         }
-
-        if ($data->type === 'expense') {
-            $currentAmount = $this->expenseModel->getAmountForOneResult($data->id);
-            $updateTotalExpenseAmount = intval($data->amount) - intval($currentAmount->amount);
-
-            $this->expenseModel->editExpense($data->description, $data->amount, $data->id);
-
-            $this->budgetModel->updateBudget($updateTotalExpenseAmount, 'expense', 'edit', $data->user_id);
+        catch (ExpiredException $e)
+        {
+            header('HTTP/1.1 401 Unauthorized');
         }
     }
     
     public function deleteAction()
     {
-        $request = file_get_contents('php://input');
+        try
+        {
+            $client_data = $this->verifyAccessToken();
+            $user_id = $client_data->userId;
+            
+            $request = file_get_contents('php://input');
         
-        $data = json_decode($request);
-        
-        if ($data->type === 'income') {
-            $this->incomeModel->deleteIncome($data->id);
-            $this->budgetModel->updateBudget($data->amount, $data->type, 'delete', $data->user_id);
+            $data = json_decode($request);
+
+            if ($data->type === 'income') {
+                $this->incomeModel->deleteIncome($data->id);
+                $this->budgetModel->updateBudget($data->amount, $data->type, 'delete', $user_id);
+            }
+            if ($data->type === 'expense') {
+                $this->expenseModel->deleteExpense($data->id);
+                $this->budgetModel->updateBudget($data->amount, $data->type, 'delete', $user_id);
+            }    
         }
-        if ($data->type === 'expense') {
-            $this->expenseModel->deleteExpense($data->id);
-            $this->budgetModel->updateBudget($data->amount, $data->type, 'delete', $data->user_id);
+        catch (ExpiredException $e)
+        {
+            header('HTTP/1.1 401 Unauthorized');
         }
     }        
 }
