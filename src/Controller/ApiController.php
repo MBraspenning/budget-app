@@ -14,7 +14,7 @@ class ApiController extends Controller
     }
     
     public function verifyAccessToken()
-    {           
+    {
         $headers = apache_request_headers();
         
         $authorization_header = $headers['Authorization'];
@@ -34,8 +34,8 @@ class ApiController extends Controller
         }
         catch (ExpiredException $e)
         {
-            return 'This token has expired';
-        }                
+            throw $e;
+        }                   
     }
     
     public function loginAction()
@@ -62,7 +62,7 @@ class ApiController extends Controller
                 $issuedAt = time();
                 $issuer = URLROOT;
                 $notBefore = $issuedAt;
-                $expires = $notBefore + (60 * 5);
+                $expires = $notBefore + (30);
 
                 $token = array(
                     'iat' => $issuedAt,
@@ -91,24 +91,31 @@ class ApiController extends Controller
     
     public function fetchAction()
     {   
-        $client_data = $this->verifyAccessToken();
-        
-        $month = intval(date('n'));
-        $year = intval(date('Y'));
-        
-        $user_id = $client_data->userId;
-        
-        $allBudgetForCurrentMonth = $this->budgetModel->getAllBudgetForMonth($month, $year, $user_id);
-        $allIncomeForCurrentMonth = $this->incomeModel->getAllIncomeForMonth($month, $year, $user_id);
-        $allExpenseForCurrentMonth = $this->expenseModel->getAllExpenseForMonth($month, $year, $user_id);
-                
-        $budgetJSON = json_encode($allBudgetForCurrentMonth);
-        $incomeJSON = json_encode($allIncomeForCurrentMonth);
-        $expenseJSON = json_encode($allExpenseForCurrentMonth);
-        
-        $jsonArr = [$budgetJSON, $incomeJSON, $expenseJSON];
+        try 
+        {
+            $client_data = $this->verifyAccessToken(); 
+            
+            $month = intval(date('n'));
+            $year = intval(date('Y'));
 
-        echo json_encode($jsonArr);
+            $user_id = $client_data->userId;
+
+            $allBudgetForCurrentMonth = $this->budgetModel->getAllBudgetForMonth($month, $year, $user_id);
+            $allIncomeForCurrentMonth = $this->incomeModel->getAllIncomeForMonth($month, $year, $user_id);
+            $allExpenseForCurrentMonth = $this->expenseModel->getAllExpenseForMonth($month, $year, $user_id);
+
+            $budgetJSON = json_encode($allBudgetForCurrentMonth);
+            $incomeJSON = json_encode($allIncomeForCurrentMonth);
+            $expenseJSON = json_encode($allExpenseForCurrentMonth);
+
+            $jsonArr = [$budgetJSON, $incomeJSON, $expenseJSON];
+
+            echo json_encode($jsonArr);
+        }
+        catch (ExpiredException $e)
+        {
+            header('HTTP/1.1 401 Unauthorized');
+        } 
     }
     
     public function insertAction()
