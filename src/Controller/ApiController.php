@@ -1,6 +1,7 @@
 <?php
 
 use \Firebase\JWT\JWT;
+use \Firebase\JWT\ExpiredException;
 
 class ApiController extends Controller
 {
@@ -12,14 +13,12 @@ class ApiController extends Controller
         $this->budgetModel = $this->model('Budget');
     }
     
-    public function verifyAccessTokenAction()
-    {
+    public function verifyAccessToken()
+    {           
         $headers = apache_request_headers();
         
-        //$authorization_header = $headers['Authorization'];
-        
-        $authorization_header = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1MjkwNzk0NjIsImlzcyI6Imh0dHA6XC9cL2xvY2FsaG9zdFwvYnVkZ2V0YXBwIiwibmJmIjoxNTI5MDc5NDYyLCJleHAiOjE1MjkwNzk3NjIsImRhdGEiOnsidXNlcklkIjoidGVzdCJ9fQ.7sZJmnyWZaAvyJXanW5rOyOocxaJXeaboPNg7XcsGeTDBMEj4QrhJiAqLAXeFv0F5BuR_SqZsDrmKrL4vezZkA';
-        
+        $authorization_header = $headers['Authorization'];
+                
         $jwt = null;
         
         if (preg_match('/Bearer\s(\S+)/', $authorization_header, $matches)) 
@@ -27,9 +26,16 @@ class ApiController extends Controller
             $jwt = $matches[1];
         }
         
-        $decodedJwt = JWT::decode($jwt, JWT_KEY, array('HS512'));
-        
-        print_r($decodedJwt);
+        try 
+        {
+            $decoded = JWT::decode($jwt, JWT_KEY, array('HS512'));  
+            
+            return $decoded->data;            
+        }
+        catch (ExpiredException $e)
+        {
+            return 'This token has expired';
+        }                
     }
     
     public function loginAction()
@@ -64,7 +70,7 @@ class ApiController extends Controller
                     'nbf' => $notBefore,
                     'exp' => $expires,
                     'data' => [
-                        'userId' => 'test'
+                        'userId' => $user->id
                     ]
                 );
                 
@@ -84,11 +90,13 @@ class ApiController extends Controller
     }
     
     public function fetchAction()
-    {            
+    {   
+        $client_data = $this->verifyAccessToken();
+        
         $month = intval(date('n'));
         $year = intval(date('Y'));
         
-        $user_id = $_GET['user_id'];
+        $user_id = $client_data->userId;
         
         $allBudgetForCurrentMonth = $this->budgetModel->getAllBudgetForMonth($month, $year, $user_id);
         $allIncomeForCurrentMonth = $this->incomeModel->getAllIncomeForMonth($month, $year, $user_id);
