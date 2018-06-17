@@ -62,7 +62,7 @@ class ApiController extends Controller
                 $issuedAt = time();
                 $issuer = URLROOT;
                 $notBefore = $issuedAt;
-                $expires = $notBefore + (30);
+                $expires = $notBefore + (60 * 60 * 24 * 7);
 
                 $token = array(
                     'iat' => $issuedAt,
