@@ -78,7 +78,7 @@ class User
         ) 
         {
             $errors['password_error'] = 
-                'Passwords don\'t match, please verify you entered the correct password.';
+                'Passwords don\'t match.';
         }
         
         return $errors;
