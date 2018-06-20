@@ -89,6 +89,11 @@ class ApiController extends Controller
         }                     
     }
     
+    public function RegisterAction()
+    {
+        
+    }
+    
     public function fetchAction()
     {   
         try 
