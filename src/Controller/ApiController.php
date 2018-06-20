@@ -102,13 +102,6 @@ class ApiController extends Controller
             'confirm_password' => trim($data->confirmPassword),
         ];
         
-//        $user_registration_input = [
-//            'username' => 'hardcode',
-//            'email' => 'wrong',
-//            'password' => 'password',
-//            'confirm_password' => 'password',
-//        ];
-        
         $validationErrors = $this->userModel->validateInput($user_registration_input);
         
         if (empty($validationErrors))
@@ -119,34 +112,6 @@ class ApiController extends Controller
         {
             echo json_encode(['error' => $validationErrors]);
         }
-        
-//        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//            
-//            $user_register_input = [
-//                'username' => trim($_POST['username']),
-//                'email' => trim($_POST['email']),
-//                'password' => trim($_POST['password']),
-//                'confirm_password' => trim($_POST['confirm_password'])
-//            ];
-//            
-//            $validationErrors = $this->userModel->validateInput($user_register_input);
-//            
-//            if (empty($validationErrors)) {
-//                $this->userModel->registerUser($user_register_input);
-//                flash('register_success', 'You are registered and can now log in.');
-//                redirect('login');
-//            } else {
-//                $this->view('users/register', array(
-//                    'user_register_input' => $user_register_input,
-//                    'errors' => $validationErrors
-//                ));
-//            }
-//   
-//        } else {                        
-//            $this->view('users/register', array(
-//                'errors' => [],
-//            ));
-//        }
     }
     
     public function fetchAction()
