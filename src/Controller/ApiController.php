@@ -16,14 +16,29 @@ class ApiController extends Controller
     public function verifyAccessToken()
     {
         $headers = apache_request_headers();
+             
+        if (!isset($headers['Authorization'])) 
+        {
+            header('HTTP/1.1 401 Unauthorized');
+            echo json_encode(['error' => 'You are not allowed to access this page.']);
+            
+            return;
+        }
         
         $authorization_header = $headers['Authorization'];
-                
+        
         $jwt = null;
         
         if (preg_match('/Bearer\s(\S+)/', $authorization_header, $matches)) 
         {
             $jwt = $matches[1];
+        }
+        else
+        {
+            header('HTTP/1.1 401 Unauthorized');
+            echo json_encode(['error' => 'You are not allowed to access this page.']);
+            
+            return;
         }
         
         try 
@@ -35,7 +50,7 @@ class ApiController extends Controller
         catch (ExpiredException $e)
         {
             throw $e;
-        }                   
+        }
     }
     
     public function loginAction()
