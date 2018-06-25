@@ -102,22 +102,22 @@ class User
         $errors = [];
         
         // VALIDATE FIELDS ARE NOT EMPTY
-        if (empty($data['email'])) {
-            $errors['email_error'] = 'Please enter your email.';
+        if (empty($data['login'])) {
+            $errors['login_error'] = 'Please enter your username or email.';
         }
         if (empty($data['password'])) {
             $errors['password_error'] = 'Please enter your password.';
         }
         
         // VALIDATE CORRECT EMAIL / PASSWORD
-        if (!empty($data['email'])) {
-            $this->db->query("SELECT email, password FROM users WHERE email = :email");
-            $this->db->bind(':email', $data['email']);
+        if (!empty($data['login'])) {
+            $this->db->query("SELECT email, password FROM users WHERE email = :login OR username = :login");
+            $this->db->bind(':login', $data['login']);
             
             $row = $this->db->single();
             
             if ($this->db->countAllRows() === 0) {
-                $errors['email_error'] = 'Incorrect email.';
+                $errors['login_error'] = 'Incorrect username or email.';
             }
             
             if (!empty($data['password']) && $this->db->countAllRows() > 0 && !password_verify($data['password'], $row->password)) {
@@ -130,8 +130,8 @@ class User
     
     public function loginUser(array $login_input)
     {        
-        $this->db->query("SELECT * FROM users WHERE email = :email");        
-        $this->db->bind(':email', $login_input['email']);        
+        $this->db->query("SELECT * FROM users WHERE email = :login OR username = :login");        
+        $this->db->bind(':login', $login_input['login']);        
         
         $user = $this->db->single();
         

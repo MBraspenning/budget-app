@@ -5,20 +5,21 @@
     <div class="col-md-6 col-centered mt-5">
         <?php flash('register_success'); ?>
         <h4 class="mb-3">Login</h4>
+        
         <form action="<?php echo URLROOT; ?>/user/login" method="POST">
             <div class="form-group">
                 <input 
-                    name="email" 
-                    id="email" 
+                    name="login" 
+                    id="login" 
                     type="text"    
-                    class="form-control <?php echo (!empty($data['errors']['email_error'])) ? 'is-invalid' : ''; ?>"
-                    placeholder="Email"
-                    <?php if (!empty($data['user_login_input']['email'])) : ?>
-                    value="<?php echo $data['user_login_input']['email'] ?>"
+                    class="form-control <?php echo (!empty($data['errors']['login_error'])) ? 'is-invalid' : ''; ?>"
+                    placeholder="Username or Email"
+                    <?php if (!empty($data['user_login_input']['login'])) : ?>
+                    value="<?php echo $data['user_login_input']['login'] ?>"
                     <?php endif; ?>
                 > 
                 <span class="invalid-feedback">
-                    <?php echo $data['errors']['email_error']; ?>
+                    <?php echo $data['errors']['login_error']; ?>
                 </span>   
             </div>
             <div class="form-group">
@@ -40,8 +41,8 @@
                             class="btn btn-primary" 
                             type="submit" 
                             value="Login" 
-                            name="login" 
-                            id="login"
+                            name="submit" 
+                            id="submit"
                         >
                     </div>     
                 </div>

@@ -13,7 +13,8 @@ class UserController extends Controller
             redirect('');
         }
         
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+        {
             
             $user_register_input = [
                 'username' => trim($_POST['username']),
@@ -35,7 +36,9 @@ class UserController extends Controller
                 ));
             }
    
-        } else {                        
+        } 
+        else 
+        {                        
             $this->view('users/register', array(
                 'errors' => [],
             ));
@@ -44,14 +47,15 @@ class UserController extends Controller
     
     public function loginAction()
     {
-        if (isLoggedIn()) {
+        if (isLoggedIn()) 
+        {
             redirect('');
         }
         
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+        {                        
             $user_login_input = [
-                'email' => trim($_POST['email']),
+                'login' => trim($_POST['login']),
                 'password' => trim($_POST['password'])
             ];
             
@@ -73,9 +77,10 @@ class UserController extends Controller
                     'user_login_input' => $user_login_input,
                     'errors' => $validationErrors,
                 ));    
-            }  
-            
-        } else {            
+            }              
+        } 
+        else 
+        {            
             $this->view('users/login', array(
                 'errors' => [],
             ));

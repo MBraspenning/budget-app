@@ -45,7 +45,7 @@ class ApiController extends Controller
         $data = json_decode($request);        
             
         $user_login_input = [
-            'email' => trim($data->email),
+            'login' => trim($data->login),
             'password' => trim($data->password)
         ];
 
@@ -107,6 +107,8 @@ class ApiController extends Controller
         if (empty($validationErrors))
         {
             $this->userModel->registerUser($user_registration_input);
+            
+            echo json_encode(['success' => 'You are registered and can now log in.']);            
         }
         else 
         {
